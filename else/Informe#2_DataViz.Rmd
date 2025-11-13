@@ -1,0 +1,900 @@
+---
+title: "Informe #2"
+output:
+  html_document:
+    toc: true            
+    toc_float: true      
+    number_sections: true 
+    theme: united        
+date: "2025-10-07"
+---
+
+<style>
+p {
+  text-align: justify;
+}
+</style>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,      
+  message = FALSE,  
+  warning = FALSE,  
+  error = FALSE     
+)
+```
+
+
+# Introducción
+
+<div style="text-align: justify;">
+La **tuberculosis (TB)** sigue siendo una de las enfermedades infecciosas más relevantes a nivel global, con un impacto sostenido en la salud pública a pesar de los avances en diagnóstico y tratamiento. Una proporción significativa de la población mundial vive con una infección latente por *Mycobacterium tuberculosis* (LTBI), lo que implica la presencia de la bacteria sin manifestación activa de la enfermedad, pero con riesgo potencial de desarrollarla en el futuro. Comprender la magnitud y evolución de esta infección es fundamental para orientar las políticas de prevención y control que promueve la Organización Mundial de la Salud (OMS).
+
+El presente análisis se basa en las estimaciones publicadas por la OMS dentro del *Global Tuberculosis Report 2024*, específicamente en el apartado sobre **infección latente por tuberculosis (LTBI) en contactos domiciliarios**, que representa a uno de los grupos poblacionales con mayor vulnerabilidad frente a la transmisión de la enfermedad. Este tipo de información permite observar la situación global de la infección y los avances alcanzados en la detección y contención de la tuberculosis durante las últimas décadas.
+
+En este contexto, el análisis busca responder a la siguiente pregunta:  
+**¿Cómo ha variado la prevalencia estimada de infección latente por tuberculosis (LTBI) en contactos domiciliarios a nivel mundial entre los años 2000 y 2024, y qué regiones presentan los mayores cambios en sus estimaciones durante este período?**
+
+**Fuente:** https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data
+
+# Preparación de los datos
+
+## Carga de datos
+
+Librerías utilizadas:
+```{r}
+library(readr)
+library(Amelia)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+library(knitr)
+library(mice)
+library(patchwork)
+library(gridExtra)
+library(reshape2)
+library(viridis)
+```
+
+En primer lugar, se carga la base de datos.
+```{r}
+dataset <- read_csv("LTBI_estimates_2025-10-08.csv")
+```
+
+## Vista preliminar
+
+Para dar un primer vistazo al dataframe, se hace uso de la función **head()** para ver sus primeros **10 registros**:
+```{r}
+head(dataset, 10)
+```
+
+Haciendo uso de la función **glimpse()** del paquete **dplyr**, es posible conocer el número total de **filas** y **columnas** presentes en la base de datos, así como conocer los nombres de cada **variable**.
+```{r}
+glimpse(dataset)
+```
+
+Este dataset contiene **25 variables** diferentes, que se definen y clasifican según sus tipos en la siguiente tabla:
+```{r}
+tabla_variables <- tribble(
+  ~"Nombre de la variable", ~"Descripción", ~"Tipo de variable",
+  "country", "Nombre del país o territorio reportado por la OMS.", "Cualitativa - Nominal",
+  "iso2", "Código ISO de dos letras del país.", "Cualitativa - Nominal",
+  "iso3", "Código ISO de tres letras del país.", "Cualitativa - Nominal",
+  "iso_numeric", "Código numérico del país según el estándar ISO.", "Cualitativa - Nominal",
+  "g_whoregion", "Región geográfica de la OMS a la que pertenece el país.", "Cualitativa - Nominal",
+  "year", "Año de referencia de la estimación de infección latente por TB.", "Cuantitativa - Discreta",
+  "source_hh", "Fuente de los datos de contactos domiciliarios utilizada en la estimación.", "Cualitativa - Nominal",
+  "e_hh_size", "Tamaño medio de los hogares.", "Cuantitativa - Continua",
+  "prevtx_data_available", "Indicador de disponibilidad de datos previos de tratamiento (1 = disponible, 0 = no disponible).", "Cuantitativa - Discreta",
+  "newinc_con_prevtx", "Número estimado de nuevos casos de TB en contactos domiciliarios con historial previo de tratamiento.", "Cuantitativa - Discreta",
+  "newinc_con04_prevtx", "Número estimado de nuevos casos de TB en contactos menores de 5 años con historial previo de tratamiento.", "Cuantitativa - Discreta",
+  "ptsurvey_newinc", "Número estimado de nuevos casos en encuestas poblacionales de TB activa.", "Cuantitativa - Discreta",
+  "ptsurvey_newinc_con04_prevtx", "Estimación de nuevos casos en encuestas poblacionales para menores de 5 años con historial previo de tratamiento.", "Cuantitativa - Discreta",
+  "e_hh_contacts", "Número estimado de contactos domiciliarios incluidos en la modelización.", "Cuantitativa - Discreta",
+  "e_hh_contacts_lo", "Límite inferior del intervalo de incertidumbre para el número de contactos domiciliarios.", "Cuantitativa - Continua",
+  "e_hh_contacts_hi", "Límite superior del intervalo de incertidumbre para el número de contactos domiciliarios.", "Cuantitativa - Continua",
+  "e_prevtx_hh_contacts_pct", "Porcentaje estimado de contactos domiciliarios con tratamiento previo para TB.", "Cuantitativa - Continua",
+  "e_prevtx_hh_contacts_pct_lo", "Límite inferior del intervalo de incertidumbre del porcentaje de contactos con tratamiento previo.", "Cuantitativa - Continua",
+  "e_prevtx_hh_contacts_pct_hi", "Límite superior del intervalo de incertidumbre del porcentaje de contactos con tratamiento previo.", "Cuantitativa - Continua",
+  "e_prevtx_eligible", "Número estimado de personas elegibles para profilaxis o tratamiento preventivo de TB.", "Cuantitativa - Discreta",
+  "e_prevtx_eligible_lo", "Límite inferior del intervalo de incertidumbre para los elegibles a tratamiento preventivo.", "Cuantitativa - Continua",
+  "e_prevtx_eligible_hi", "Límite superior del intervalo de incertidumbre para los elegibles a tratamiento preventivo.", "Cuantitativa - Continua",
+  "e_prevtx_kids_pct", "Porcentaje de niños elegibles dentro de los contactos domiciliarios.", "Cuantitativa - Continua",
+  "e_prevtx_kids_pct_lo", "Límite inferior del intervalo de incertidumbre del porcentaje de niños elegibles.", "Cuantitativa - Continua",
+  "e_prevtx_kids_pct_hi", "Límite superior del intervalo de incertidumbre del porcentaje de niños elegibles.", "Cuantitativa - Continua"
+)
+
+kable(tabla_variables)
+```
+
+Con el fin de dar foco a resolver la **pregunta** propuesta al inicio del **EDA**, se tienen en cuenta sólo las variables **year**, **g_whoregion**, **e_prevtx_hh_contacts_pct**, **e_prevtx_hh_contacts_pct_lo**, **e_prevtx_hh_contacts_pct_hi**, **e_prevtx_kids_pct** y **e_prevtx_eligible**. Estas variables fueron seleccionadas por ser las que mejor representan la evolución temporal, la distribución regional y la magnitud estimada de la infección latente por tuberculosis (LTBI), permitiendo analizar tanto su comportamiento global como las diferencias entre regiones.
+
+Ahora, se construirá un **dataframe** sólo con estas variables para mayor comodidad a la hora de trabajar en el resto del análisis. A su vez, se usa nuevamente **glimpse()** para desplegar un resumen del mismo.
+```{r}
+data <- dataset %>%
+  select(
+    year,
+    g_whoregion,
+    e_prevtx_hh_contacts_pct,
+    e_prevtx_hh_contacts_pct_lo,
+    e_prevtx_hh_contacts_pct_hi,
+    e_prevtx_kids_pct,
+    e_prevtx_eligible
+  ) %>%
+  
+  rename(
+    anio = year,
+    region_OMS = g_whoregion,
+    prevalencia_contactos = e_prevtx_hh_contacts_pct,
+    prevalencia_inferior = e_prevtx_hh_contacts_pct_lo,
+    prevalencia_superior = e_prevtx_hh_contacts_pct_hi,
+    porcentaje_ninos = e_prevtx_kids_pct,
+    elegibles_tratamiento = e_prevtx_eligible
+  )
+
+glimpse(data)
+```
+
+
+## Detección de valores faltantes
+Con el fin de verificar el porcentaje de valores **NA** presentes en el dataframe, se generará un **missingness map** haciendo uso de la función **missma()** del paquete **Amelia**.
+```{r}
+missmap(data, col = c("red", "blue"), legend = TRUE)
+```
+
+Como se puede observar, el dataframe tiene un **21%** de **datos faltantes**. Sin embargo, antes de imputar, es necesario analizar el porcentaje correspondiente a cada variable; por lo que se crean la siguiente tabla y el siguiente gráfico de barras:
+```{r}
+porcentaje_na <- sapply(data, function(x) sum(is.na(x)) / length(x) * 100)
+
+tabla_na <- data.frame(
+  Variable = names(porcentaje_na),
+  Porcentaje_NA = round(porcentaje_na, 2)
+)
+
+tabla_na <- tabla_na[order(-tabla_na$Porcentaje_NA), ]
+print(tabla_na)
+
+ggplot(tabla_na, aes(x = reorder(Variable, -Porcentaje_NA), y = Porcentaje_NA)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = paste0(Porcentaje_NA, "%")), vjust = -0.4, size = 3) +
+  labs(
+    title = "Porcentaje de valores faltantes por variable",
+    x = "Variable",
+    y = "Porcentaje de NA (%)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Ahora, se clasificarán según su **tipo de ausencia**.
+
+```{r}
+clasificacion_ausencia <- data.frame(
+  Variable = c(
+    "prevalencia_contactos",
+    "prevalencia_inferior",
+    "prevalencia_superior",
+    "porcentaje_ninos",
+    "elegibles_tratamiento",
+    "anio",
+    "region_OMS"
+  ),
+  Tipo_ausencia = c(
+    "MAR (Missing At Random)",
+    "MAR (Missing At Random)",
+    "MAR (Missing At Random)",
+    "MNAR (Missing Not At Random)",
+    "MCAR (Missing Completely At Random)",
+    "Sin NA",
+    "Sin NA"
+  ),
+  Justificacion = c(
+    "Los faltantes se concentran en ciertas regiones o años, probablemente por ausencia de mediciones locales.",
+    "Presenta el mismo patrón que 'prevalencia_contactos', así que los faltantes dependen de esa misma causa.",
+    "Se comporta igual que las anteriores; las ausencias parecen venir del mismo proceso de no registro.",
+    "Los datos que faltan están ligados a zonas donde no se hacen pruebas en menores, lo que puede sesgar los valores.",
+    "Tiene pocos NA, distribuidos al azar; seguramente se deben a errores puntuales de reporte.",
+    "Variable completa, sin valores faltantes.",
+    "Variable completa, sin valores faltantes."
+  )
+)
+
+kable(clasificacion_ausencia, caption = "Tipos de ausencia de datos por variable")
+```
+
+## Imputación de valores faltantes
+
+Luego de identificar el tipo de ausencia de datos en cada variable, se procede con la imputación.  
+
+### Imputación de variables MAR
+
+Las variables **prevalencia_contactos**, **prevalencia_inferior** y **prevalencia_superior** fueron clasificadas como MAR (Missing At Random). Esto significa que los valores faltantes no son completamente aleatorios, sino que dependen de otras variables observadas, como el **año** o la **región de la OMS**.  
+
+Por esa razón, se decidió imputarlas usando la **mediana por grupo (año y región)**. Esto permite mantener la coherencia entre países y periodos, evitando que la imputación afecte las diferencias entre zonas.
+
+```{r}
+mar_imputados <- data
+
+grupos <- group_by(mar_imputados, region_OMS, anio)
+
+mar_imputados <- mutate(grupos,
+  prevalencia_contactos = ifelse(is.na(prevalencia_contactos),
+                                 median(prevalencia_contactos, na.rm = TRUE),
+                                 prevalencia_contactos),
+  prevalencia_inferior = ifelse(is.na(prevalencia_inferior),
+                                median(prevalencia_inferior, na.rm = TRUE),
+                                prevalencia_inferior),
+  prevalencia_superior = ifelse(is.na(prevalencia_superior),
+                                median(prevalencia_superior, na.rm = TRUE),
+                                prevalencia_superior)
+)
+
+mar_imputados <- ungroup(mar_imputados)
+```
+
+
+### Imputación de variable MCAR
+
+La variable **elegibles_tratamiento** fue clasificada como MCAR (Missing Completely At Random),  
+ya que los valores faltantes son pocos (menos del 1%) y no muestran patrón alguno. En estos casos, lo más razonable es imputar usando la **mediana global**, ya que la ausencia es completamente aleatoria y no depende de ningún otro factor.
+
+```{r}
+mcar_imputados <- data
+
+mediana_elegibles <- median(mcar_imputados$elegibles_tratamiento, na.rm = TRUE)
+
+mcar_imputados$elegibles_tratamiento[
+  is.na(mcar_imputados$elegibles_tratamiento)
+] <- mediana_elegibles
+```
+
+### Imputación de variable MNAR
+
+La variable **porcentaje_ninos** se clasificó como MNAR (Missing Not At Random).  
+Esto significa que los faltantes probablemente dependen del propio valor no observado;  
+por ejemplo, regiones con baja cobertura en menores o sin programas de detección infantil.  
+
+En estos casos, imputar con una media o mediana puede introducir sesgo,  
+así que se optó por una **imputación por regresión múltiple** usando el método **MICE**.  
+Este enfoque aprovecha la información del resto de variables numéricas para estimar los valores más probables.
+
+```{r}
+mnar_imputados <- data
+
+imputacion_mnar <- mice(
+  mnar_imputados[, c("porcentaje_ninos", 
+                    "prevalencia_contactos",
+                    "prevalencia_inferior",
+                    "prevalencia_superior",
+                    "elegibles_tratamiento")],
+  m = 1,                  
+  method = "norm.predict",
+  seed = 123
+)
+
+mnar_imputados$porcentaje_ninos <- complete(imputacion_mnar)$porcentaje_ninos
+```
+
+## Evaluación de la imputación
+En esta sección, en primer lugar se genera un **nuevo dataframe** llamado **data_imputado**, con todas las imputaciones realizadas. Esto se hace, con el fin de poder compararlo con el dataframe **original**.
+
+```{r}
+data_imputado <- data
+
+data_imputado$prevalencia_contactos <- mar_imputados$prevalencia_contactos
+data_imputado$prevalencia_inferior  <- mar_imputados$prevalencia_inferior
+data_imputado$prevalencia_superior  <- mar_imputados$prevalencia_superior
+
+data_imputado$elegibles_tratamiento <- mcar_imputados$elegibles_tratamiento
+
+data_imputado$porcentaje_ninos <- mnar_imputados$porcentaje_ninos
+
+str(data_imputado)
+```
+
+### Missingness Map
+
+Ahora, se genera un nuevo **missingness map** con el dataframe recién creado-
+```{r}
+missmap(data_imputado, col = c("red", "blue"), legend = TRUE)
+```
+El gráfico obtenido arroja un **0%** de valores **NA**, por lo que en una primera instancia, se puede considerar exitoso el proceso de imputación. Sin embargo, aún es necesario verificar que las distribuciones se mantengan iguales.
+
+### Histogramas
+
+A continuación, se construyen varios **histogramas** comparativos, con el fin de obtener una representación visual de las distribuciones antes y después de imputar.
+```{r}
+g1 <- ggplot(data, aes(x = prevalencia_contactos)) +
+  geom_histogram(fill = "red", color = "black", bins = 30) +
+  ggtitle("Data original") +
+  xlab("Prevalencia en contactos") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g2 <- ggplot(data_imputado, aes(x = prevalencia_contactos)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+  ggtitle("Data imputada") +
+  xlab("Prevalencia en contactos") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+
+g1 + g2
+```
+```{r}
+g3 <- ggplot(data, aes(x = prevalencia_inferior)) +
+  geom_histogram(fill = "red", color = "black", bins = 30) +
+  ggtitle("Data original") +
+  xlab("Prevalencia inferior") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g4 <- ggplot(data_imputado, aes(x = prevalencia_inferior)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+  ggtitle("Data imputada") +
+  xlab("Prevalencia inferior") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g3 + g4
+```
+```{r}
+g5 <- ggplot(data, aes(x = prevalencia_superior)) +
+  geom_histogram(fill = "red", color = "black", bins = 30) +
+  ggtitle("Data original") +
+  xlab("Prevalencia superior") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g6 <- ggplot(data_imputado, aes(x = prevalencia_superior)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+  ggtitle("Data imputada") +
+  xlab("Prevalencia superior") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g5 + g6
+```
+```{r}
+g7 <- ggplot(data, aes(x = porcentaje_ninos)) +
+  geom_histogram(fill = "red", color = "black", bins = 30) +
+  ggtitle("Data original") +
+  xlab("Porcentaje de niños") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g8 <- ggplot(data_imputado, aes(x = porcentaje_ninos)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+  ggtitle("Data imputada") +
+  xlab("Porcentaje de niños") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g7 + g8
+```
+```{r}
+g9 <- ggplot(data, aes(x = elegibles_tratamiento)) +
+  geom_histogram(fill = "red", color = "black", bins = 30) +
+  ggtitle("Data original") +
+  xlab("Elegibles para tratamiento") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g10 <- ggplot(data_imputado, aes(x = elegibles_tratamiento)) +
+  geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+  ggtitle("Data imputada") +
+  xlab("Elegibles para tratamiento") +
+  ylab("Frecuencia") +
+  theme_minimal()
+
+g9 + g10
+```
+
+Como se puede observar las distribuciones antes y después de imputar se mantienen iguales(aunque con **ligeras discrepancias**), por lo tanto se confirma que la imputación **no alteró** drásticamente la distribución de los datos.
+
+### Pruebas de normalidad
+
+```{r}
+vars_imputadas <- c("prevalencia_contactos",
+                    "prevalencia_inferior",
+                    "prevalencia_superior",
+                    "porcentaje_ninos",
+                    "elegibles_tratamiento")
+
+resultados_shapiro <- data.frame(
+  Variable = character(),
+  W_original = numeric(),
+  p_original = numeric(),
+  W_imputado = numeric(),
+  p_imputado = numeric(),
+  Clasificacion = character()
+)
+
+for (v in vars_imputadas) {
+  test_orig <- shapiro.test(data[[v]])
+  test_imp <- shapiro.test(data_imputado[[v]])
+  
+  clasif <- ifelse(test_orig$p.value > 0.05 & test_imp$p.value > 0.05,
+                   "Normal (p > 0.05)",
+                   "No normal (p ≤ 0.05)")
+  
+  resultados_shapiro <- rbind(resultados_shapiro,
+                              data.frame(
+                                Variable = v,
+                                W_original = round(test_orig$statistic, 4),
+                                p_original = round(test_orig$p.value, 4),
+                                W_imputado = round(test_imp$statistic, 4),
+                                p_imputado = round(test_imp$p.value, 4),
+                                Clasificacion = clasif))
+}
+
+kable(resultados_shapiro, caption = "Prueba de normalidad (Shapiro–Wilk) en datos originales e imputados")
+```
+
+Como los **p-values** obtenidos tras aplicar el test de **Shapiro-Wilk** son **menores que 0.05**, por lo que se afirma que ninguna de ellas sigue una distribución **normal**
+
+### ¿Se conservan o se distorsionan las distribuciones teóricamente?
+```{r}
+vars_no_normales <- c("prevalencia_contactos",
+                      "prevalencia_inferior",
+                      "prevalencia_superior",
+                      "porcentaje_ninos",
+                      "elegibles_tratamiento")
+
+resultados_no_normales <- data.frame(
+  Variable = character(),
+  KS_p = numeric(),
+  Mann_Whitney_p = numeric(),
+  Conclusion = character()
+)
+
+for (v in vars_no_normales) {
+  ks_p <- ks.test(data[[v]], data_imputado[[v]])$p.value
+  mw_p <- wilcox.test(data[[v]], data_imputado[[v]])$p.value
+  
+  conclusion <- ifelse(ks_p > 0.05 & mw_p > 0.05,
+                       " Preserva la distribución y el centro",
+                       " Posible distorsión tras imputación")
+  
+  resultados_no_normales <- rbind(resultados_no_normales,
+                                  data.frame(
+                                    Variable = v,
+                                    KS_p = round(ks_p, 4),
+                                    Mann_Whitney_p = round(mw_p, 4),
+                                    Conclusion = conclusion))
+}
+
+
+kable(resultados_no_normales, caption = "Evaluación de imputación - Pruebas KS y Mann–Whitney para variables no normales")
+```
+
+En este caso, es evidente que la imputación **distorsionó** la distribución de los datos, por lo que es necesario utilizar diferentes métodos de imputación.
+
+Por ende, se intentará imputar mediante el método **PMM** (Predictive Mean Matching), ya que es apropiado para variables numéricas continuas y permite generar valores imputados más realistas al basarse en observaciones existentes dentro del propio conjunto de datos.
+```{r}
+vars_imputar <- c("prevalencia_contactos",
+                  "prevalencia_inferior",
+                  "prevalencia_superior",
+                  "porcentaje_ninos",
+                  "elegibles_tratamiento")
+
+imputacion_final <- mice(data[, vars_imputar],
+                         m = 1,
+                         method = "pmm",
+                         seed = 123)
+
+data_imputado2 <- complete(imputacion_final)
+
+data_imputado2$anio <- data$anio
+data_imputado2$region_OMS <- data$region_OMS
+
+data_imputado2 <- data_imputado2[, c("anio", "region_OMS", vars_imputar)]
+```
+
+Nuevamente, se verifica la distorsión de las distribuciones.
+
+```{r}
+vars_finales <- c("prevalencia_contactos",
+                  "prevalencia_inferior",
+                  "prevalencia_superior",
+                  "porcentaje_ninos",
+                  "elegibles_tratamiento")
+
+evaluacion_final2 <- data.frame(
+  Variable = character(),
+  KS_p = numeric(),
+  Mann_Whitney_p = numeric(),
+  Conclusión = character()
+)
+
+for (v in vars_finales) {
+  ks_p <- ks.test(data[[v]], data_imputado2[[v]])$p.value
+  mw_p <- wilcox.test(data[[v]], data_imputado2[[v]])$p.value
+  
+  conclusion <- ifelse(ks_p > 0.05 & mw_p > 0.05,
+                       "Conserva la distribución y el centro",
+                       "Posible alteración tras imputación")
+
+  evaluacion_final2 <- rbind(evaluacion_final2,
+                             data.frame(
+                               Variable = v,
+                               KS_p = round(ks_p, 4),
+                               Mann_Whitney_p = round(mw_p, 4),
+                               Conclusión = conclusion))
+}
+
+kable(evaluacion_final2,
+      caption = "Evaluación de imputación (MICE-PMM, data_imputado2): Pruebas KS y Mann–Whitney entre data y data_imputado2")
+```
+
+Dado que la variable **porcentaje_ninos** presenta una distribución altamente asimétrica y los datos faltantes corresponden a mecanismos de tipo **MNAR** (Missing Not At Random), se decidió no realizar imputación sobre ella. En este contexto, los valores ausentes reflejan limitaciones estructurales en la recolección de información por grupo etario en algunos países, por lo que conservar los **NA** resulta más apropiado que imputarlos.
+
+Nuevamente se generan histogramas.
+
+```{r}
+vars_imputadas <- c("prevalencia_contactos",
+                    "prevalencia_inferior",
+                    "prevalencia_superior",
+                    "porcentaje_ninos",
+                    "elegibles_tratamiento")
+
+graficos <- list()
+
+for (var in vars_imputadas) {
+  
+  p1 <- ggplot(data, aes_string(x = var)) +
+    geom_histogram(fill = "steelblue", color = "black", bins = 30) +
+    ggtitle(paste("Original -", var)) +
+    xlab(var) + ylab("Frecuencia") +
+    theme_minimal()
+  
+  p2 <- ggplot(data_imputado2, aes_string(x = var)) +
+    geom_histogram(fill = "tomato", color = "black", bins = 30) +
+    ggtitle(paste("Imputado (MICE-PMM) -", var)) +
+    xlab(var) + ylab("Frecuencia") +
+    theme_minimal()
+  
+  graficos[[var]] <- gridExtra::grid.arrange(p1, p2, ncol = 2)
+}
+
+invisible(graficos)
+```
+Ahora, en efecto, las distribuciones antes y después de imputar son **exactamente iguales**, por lo que se confirma visualmente que las distribuciones **se preservan**.
+
+Como última medida se genera otro **missingness map** de este dataframe.
+
+```{r}
+missmap(data_imputado2, col = c("red", "blue"), legend = TRUE)
+```
+
+El gráfico arroja un **11%** de datos faltantes, distribuido entre **prevalencia_inferior** y **prevalencia_superior** que ya debían estar imputadas.
+
+```{r}
+porcentaje_na <- sapply(data_imputado2, function(x) sum(is.na(x)) / length(x) * 100)
+
+tabla_na <- data.frame(
+  Variable = names(porcentaje_na),
+  Porcentaje_NA = round(porcentaje_na, 2)
+)
+
+tabla_na <- tabla_na[order(-tabla_na$Porcentaje_NA), ]
+
+print(tabla_na)
+
+ggplot(tabla_na, aes(x = reorder(Variable, -Porcentaje_NA), y = Porcentaje_NA)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  geom_text(aes(label = paste0(Porcentaje_NA, "%")), vjust = -0.4, size = 3) +
+  labs(
+    title = "Porcentaje de valores faltantes por variable (data_imputado_2)",
+    x = "Variable",
+    y = "Porcentaje de NA (%)"
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+Esto significa que al imputar por **pmm** aunque se **conserva** la distribución de los datos, siguen existiendo valores **NA** en el dataframe. 
+
+Por lo tanto, se obtuvieron **dos resultados diferentes**:
+
+- Un dataframe con **0%** de valores faltantes pero **con** distorsión en algunas distribuciones.
+
+- Un dataframe con **11%** de valores faltantes **sin** distorsión en ninguna distribución.
+
+### Conclusión de la  imputación
+Aunque las pruebas estadísticas **(KS y Mann–Whitney)** sugieren una **posible alteración** en la forma de algunas distribuciones tras la imputación por **mediana**, este efecto no es relevante para el propósito del estudio, ya que no compromete la coherencia ni la escala original de los datos. En este caso, se privilegió la completitud y estabilidad del conjunto de datos por encima de la preservación exacta de la forma estadística, garantizando que todas las variables mantuvieran valores realistas y consistentes para el análisis descriptivo posterior
+
+Por ende se conserva el dataframe imputado por la **mediana** con **0%** de valores **NA** y **con** una ligera distorsión en la distribución de las variables.
+
+## Detección de Outliers
+
+## Diagramas de caja y bigote
+
+Como primera medida, se construirán varios **diagramas de caja y bigote** para las variables **numéricas** del dataframe.
+```{r }
+num_vars <- data_imputado[, sapply(data_imputado, is.numeric)]
+num_vars <- num_vars[, !names(num_vars) %in% "anio"]
+
+num_melt <- melt(num_vars, variable.name = "Variable", value.name = "Valor")
+
+ggplot(num_melt, aes(x = Variable, y = Valor, fill = Variable)) +
+  geom_boxplot(outlier.color = "red", alpha = 0.7) +
+  labs(
+    title = "Diagramas de caja y bigote - Variables cuantitativas",
+    x = "Variable",
+    y = "Valor"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  )
+```
+
+Es evidente que todas las variables con excepción de **porcentaje_ninos**, tienen aparente presencia de **datos atípicos**. Sin embargoo es necesario aplicar otros métodos de detección para tener mayor seguridad.
+
+
+### Regla del rango intercuartílico (IQR)**
+Se utiliza el método del rango intercuartílico con el fin de corroborar los resultados del inciso anterior.
+```{r}
+outliers_iqr <- function(x) {
+  Q1 <- quantile(x, 0.25, na.rm = TRUE)
+  Q3 <- quantile(x, 0.75, na.rm = TRUE)
+  IQR <- Q3 - Q1
+  lower <- Q1 - 1.5 * IQR
+  upper <- Q3 + 1.5 * IQR
+  sum(x < lower | x > upper, na.rm = TRUE)
+}
+
+num_vars <- data_imputado[, sapply(data_imputado, is.numeric)]
+num_vars <- num_vars[, !names(num_vars) %in% "anio"]
+
+sapply(num_vars, outliers_iqr)
+```
+
+Los resultados obtenidos **concuerdan** con los obtenidos al analizar los **boxplots** graficados. Este método también arroja evidencia de posible presencia de datos atípicos en las mismas 4 variables que el anterior.
+
+### Modified Z-score
+```{r outliers-modified-zscore, message=FALSE, warning=FALSE}
+modified_z_outliers <- function(x, threshold = 3.5) {
+  med <- median(x, na.rm = TRUE)
+  mad_val <- mad(x, constant = 1, na.rm = TRUE)  
+  M <- 0.6745 * (x - med) / mad_val
+  sum(abs(M) > threshold, na.rm = TRUE)
+}
+
+num_vars <- data_imputado[, sapply(data_imputado, is.numeric)]
+num_vars <- num_vars[, !names(num_vars) %in% "anio"]
+
+
+sapply(num_vars, modified_z_outliers)
+```
+
+Los resultados obtenidos no solo **concuerdan** con los anteriores, sino que esta vez reflejan una mayor detección de **outliers** en las 4 variables afectadas. Por lo que se tomará como principal indicador de valores atípicos en el dataframe.
+
+## Imputación de outliers
+
+Se imputa por la **mediana**.
+```{r imputar_outliers_iterativo, message=FALSE, warning=FALSE}
+imputar_outliers <- function(x, threshold = 3.5) {
+  med <- median(x, na.rm = TRUE)
+  mad_val <- mad(x, constant = 1, na.rm = TRUE)
+  
+  if (mad_val == 0 || is.na(mad_val)) return(x)
+  
+  M <- 0.6745 * (x - med) / mad_val
+  x[abs(M) > threshold] <- med  
+  return(x)
+}
+
+contar_outliers <- function(df, threshold = 3.5) {
+  sapply(df[, sapply(df, is.numeric)], function(x) {
+    med <- median(x, na.rm = TRUE)
+    mad_val <- mad(x, constant = 1, na.rm = TRUE)
+    if (mad_val == 0 || is.na(mad_val)) return(0)
+    M <- 0.6745 * (x - med) / mad_val
+    sum(abs(M) > threshold, na.rm = TRUE)
+  })
+}
+
+dataset_iter <- data_imputado
+
+iter <- 1
+repeat {
+  outliers_restantes <- contar_outliers(dataset_iter)
+  total_outliers <- sum(outliers_restantes)
+  
+  if (total_outliers == 0) break
+
+  for (v in names(dataset_iter)) {
+    if (is.numeric(dataset_iter[[v]]) && v != "anio") {
+      dataset_iter[[v]] <- imputar_outliers(dataset_iter[[v]])
+    }
+  }
+  
+  iter <- iter + 1
+}
+
+data_final <- dataset_iter
+```
+
+## Validación de la imputación
+
+```{r}
+modified_z_outliers <- function(x, threshold = 3.5) {
+  med <- median(x, na.rm = TRUE)
+  mad_val <- mad(x, constant = 1, na.rm = TRUE)  
+  M <- 0.6745 * (x - med) / mad_val
+  sum(abs(M) > threshold, na.rm = TRUE)
+}
+
+num_vars <- data_final[, sapply(data_final, is.numeric)]
+num_vars <- num_vars[, !names(num_vars) %in% "anio"]
+
+
+sapply(num_vars, modified_z_outliers)
+```
+
+
+```{r}
+library(readr)
+
+# Supongamos que tu dataframe se llama df
+write_csv(data_final, "datosfinal.csv")
+
+```
+
+
+Entonces, en efecto, se obtienen 0 **outliers**.
+
+# Resultados
+
+En primer lugar, se construyó una **línea de tiempo** para observar cómo ha cambiado la prevalencia global de infección latente por tuberculosis (LTBI) en contactos domiciliarios entre los años más recientes del periodo disponible. Este gráfico permitirá identificar tendencias generales a lo largo del tiempo, como aumentos o reducciones sostenidas en la media global.
+```{r}
+evol_global <- data_final %>%
+  group_by(anio) %>%
+  summarise(media_prevalencia = mean(prevalencia_contactos, na.rm = TRUE))
+
+ggplot(evol_global, aes(x = anio, y = media_prevalencia)) +
+  geom_line(color = "#2C3E50", linewidth = 1.3) +
+  geom_point(color = "#E74C3C", size = 3) +
+  geom_smooth(method = "loess", se = FALSE, color = "#1ABC9C", linewidth = 1, linetype = "dashed") +
+  labs(
+    title = "Evolución global de la prevalencia de infección latente por TB (2000–2024)",
+    subtitle = "Promedio anual global de prevalencia en contactos domiciliarios",
+    x = "Año",
+    y = "Prevalencia promedio (%)"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray30"),
+    axis.text = element_text(color = "gray20"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank()
+  )
+```
+En el gráfico se hay una clara tendencia general de aumento entre 2015 y 2020, con un pico hacia ese último año, seguido de una breve disminución en los años más recientes. Aunque la variación no es muy pronunciada, podría reflejar diferencias en los reportes o en la intensidad del tamizaje durante ciertos periodos. En general, la prevalencia se ha mantenido entre 8 % y 12 %, lo que sugiere una carga persistente de infección latente a nivel global.
+
+Ahora, para tener una visión más desagregada, se analizó la **tendencia temporal** de la prevalencia **por cada región de la OMS**. Esto ayuda a ver si el comportamiento global se repite en todas las zonas o si existen diferencias regionales importantes que podrían estar relacionadas con factores demográficos, económicos o con la calidad de los sistemas de vigilancia.
+```{r evolucion_por_region}
+evol_region <- data_final %>%
+  group_by(region_OMS, anio) %>%
+  summarise(media_prevalencia = mean(prevalencia_contactos, na.rm = TRUE))
+
+colores_regiones <- c(
+  "AFR" = "#D35400",  
+  "AMR" = "#2980B9",  
+  "EMR" = "#27AE60",  
+  "EUR" = "#8E44AD",  
+  "SEA" = "#C0392B",  
+  "WPR" = "#16A085"   
+)
+
+ggplot(evol_region, aes(x = anio, y = media_prevalencia, color = region_OMS)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  scale_color_manual(values = colores_regiones) +
+  labs(
+    title = "Evolución de la prevalencia de LTBI en contactos domiciliarios por región OMS",
+    subtitle = "Tendencia temporal del promedio de prevalencia por región (2000–2024)",
+    x = "Año",
+    y = "Prevalencia promedio (%)",
+    color = "Región OMS"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14, hjust = 0.5),
+    plot.subtitle = element_text(size = 12, hjust = 0.5, color = "gray30"),
+    legend.position = "right",
+    legend.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+Se observa que las regiones AFR (África) y SEAR (Sudeste Asiático) presentan las prevalencias más altas y las fluctuaciones más marcadas, mientras que EUR (Europa) y WPR (Pacífico Occidental) muestran valores más bajos y estables. Esta diferencia sugiere desigualdades estructurales en la exposición al riesgo y en la cobertura de diagnóstico. En general, la tendencia es ascendente en la mayoría de regiones hasta 2020, con cierta estabilización posterior.
+
+Se realizó también, un **gráfico comparativo** con las **prevalencias promedio por región OMS para 2023**.
+```{r}
+ultimo_anio <- max(data_final$anio)
+
+comparativo <- data_final %>%
+  filter(anio == ultimo_anio) %>%
+  group_by(region_OMS) %>%
+  summarise(prevalencia_media = mean(prevalencia_contactos, na.rm = TRUE))
+
+ggplot(comparativo, aes(x = reorder(region_OMS, prevalencia_media), y = prevalencia_media, fill = region_OMS)) +
+  geom_bar(stat = "identity", color = "black") +
+  coord_flip() +
+  labs(
+    title = paste("Prevalencia promedio por región OMS en", ultimo_anio),
+    x = "Región OMS",
+    y = "Prevalencia promedio (%)"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none")
+```
+
+En 2023, las regiones **AFR y EMR** registran las prevalencias **más elevadas** (superiores al 12 %), mientras que **SEA** muestra los valores **más bajos**. Aunque las diferencias no son extremas, sí reflejan que la carga de infección sigue siendo desigual entre regiones. Las brechas observadas podrían estar asociadas a factores como la densidad poblacional, los programas de control de TB y la capacidad de diagnóstico de cada zona.
+
+Para complementar el análisis de tendencias, se generó un **mapa de calor** que muestra la prevalencia promedio de infección latente por TB por región OMS y año.
+```{r}
+heat_data <- data_final %>%
+  group_by(region_OMS, anio) %>%
+  summarise(media_prevalencia = mean(prevalencia_contactos, na.rm = TRUE))
+
+ggplot(heat_data, aes(x = anio, y = region_OMS, fill = media_prevalencia)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient(low = "lightblue", high = "blue") +
+  labs(
+    title = "Mapa de calor: prevalencia promedio de LTBI por región y año",
+    x = "Año",
+    y = "Región OMS",
+    fill = "Prevalencia (%)"
+  ) +
+  theme_minimal()
+```
+
+En el **heatmap** se observa que la prevalencia más alta se concentró en la región Europa (EUR), especialmente alrededor del año 2020. A su vez, otras regiones como Sudeste Asiático (SEA) y Pacífico Occidental (WPR) mantienen valores más bajos y estables a lo largo del tiempo. Aunque todas las regiones muestran cierta variabilidad, no se aprecia un cambio drástico en la tendencia general, lo que refuerza la idea de una **prevalencia sostenida pero desigual** entre regiones.
+
+
+A continuación, se presenta una comparación entre los valores inferior y superior de prevalencia por región OMS en el año más reciente disponible. Este gráfico sirve para visualizar el rango estimado dentro del cual se espera que fluctúe la verdadera prevalencia, evidenciando el nivel de variabilidad o incertidumbre asociado a cada región.
+```{r}
+ultimo_anio <- max(data_final$anio)
+
+rango <- data_final %>%
+  filter(anio == ultimo_anio) %>%
+  group_by(region_OMS) %>%
+  summarise(
+    prevalencia_inferior = mean(prevalencia_inferior, na.rm = TRUE),
+    prevalencia_superior = mean(prevalencia_superior, na.rm = TRUE)
+  )
+
+rango_largo <- rango %>%
+  tidyr::pivot_longer(cols = c(prevalencia_inferior, prevalencia_superior),
+                      names_to = "Tipo", values_to = "Valor")
+
+ggplot(rango_largo, aes(x = region_OMS, y = Valor, fill = Tipo)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(
+    title = paste("Rango estimado de prevalencia por región OMS en", ultimo_anio),
+    x = "Región OMS",
+    y = "Prevalencia (%)",
+    fill = "Estimación"
+  ) +
+  theme_minimal()
+```
+
+Las regiones **Europa (EUR**) y **África (AFR)** destacan por tener los valores de prevalencia más altos, tanto en su estimación inferior como superior. En cambio, Sudeste Asiático (SEA) muestra el rango más bajo, indicando una prevalencia relativamente menor. La diferencia entre las barras inferior y superior es más amplia en algunas regiones, lo que refleja mayor variabilidad en las mediciones o diferencias en las fuentes de información. En general, el patrón sugiere que la carga de infección sigue siendo considerable en ciertas zonas, con márgenes de incertidumbre aún importantes.
+
+# Conclusión
+
+En conjunto, los resultados permiten concluir que la prevalencia de infección latente por tuberculosis (LTBI) en contactos domiciliarios **se mantiene estable a nivel global**, sin reducciones significativas durante los últimos años analizados.
+
+Sin embargo, los gráficos evidencian desigualdades claras entre regiones: mientras que **África (AFR)** y **Europa (EUR**) registran las tasas **más altas**, **Sudeste Asiático (SEA)** y **Pacífico Occidental (WPR)** presentan niveles consistentemente más bajos. Estas diferencias pueden estar relacionadas con la intensidad de los programas de vigilancia, la detección temprana o las condiciones socioeconómicas de cada territorio.
+
+Además, el análisis del rango de prevalencia muestra que algunas regiones presentan intervalos más amplios, lo cual sugiere mayor incertidumbre en las estimaciones o variabilidad entre países.
+
+En general, el estudio evidencia que la tuberculosis latente sigue siendo un problema persistente de salud pública global, con progresos limitados en la reducción de su prevalencia, especialmente en regiones donde la carga sigue siendo alta y desigual.

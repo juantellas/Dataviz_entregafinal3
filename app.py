@@ -11,6 +11,7 @@ from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error
 import numpy as np
 import plotly.graph_objects as go
 import os
+import statsmodels
 # -------------------------------------
 # Configuración general
 # -------------------------------------
@@ -621,6 +622,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

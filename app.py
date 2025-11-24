@@ -47,6 +47,7 @@ def fig_to_uri(fig):
 # -------------------------------------
 nav_buttons = dbc.ButtonGroup(
     [
+        dbc.Button("0. Cover Page", id="btn-0", outline=True, color="primary"),  # Nuevo botón
         dbc.Button("1. Introducción", id="btn-1", outline=True, color="primary"),
         dbc.Button("2. Contexto", id="btn-2", outline=True, color="primary"),
         dbc.Button("3. Planteamiento del Problema", id="btn-3", outline=True, color="primary"),
@@ -77,7 +78,7 @@ app.layout = dbc.Container(
 # -------------------------------------
 @app.callback(
     Output("content-area", "children"),
-    [Input(f"btn-{i}", "n_clicks") for i in range(1, 9)]
+    [Input(f"btn-{i}", "n_clicks") for i in range(0, 9)]
 )
 def mostrar_contenido(*args):
     ctx = dash.callback_context
@@ -86,7 +87,20 @@ def mostrar_contenido(*args):
 
     boton_id = ctx.triggered[0]["prop_id"].split(".")[0]
 
-    if boton_id == "btn-1":
+    if boton_id == "btn-0":
+        return dbc.Card([
+            dbc.CardBody([
+                html.H1("Bienvenido al Dashboard", className="text-center mb-4"),
+                html.H3("Análisis interactivo de LTBI a nivel mundial", className="text-center mb-3"),
+                html.Img(src="assets/cover_image.png", style={"width": "60%", "display": "block", "margin": "auto"}),  # opcional
+                html.P("Este dashboard permite explorar la evolución de la prevalencia de LTBI entre 2015 y 2023, así como comparar distintos modelos predictivos.", className="text-center mt-3"),
+                html.P("Selecciona una sección del menú superior para comenzar.", className="text-center text-muted")
+            ])
+        ])
+
+    
+
+    elif boton_id == "btn-1":
         return dbc.Card([
             dbc.CardBody([
                 html.H4("Introducción", className="card-title"),
@@ -622,6 +636,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

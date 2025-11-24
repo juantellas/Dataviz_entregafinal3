@@ -336,29 +336,158 @@ def mostrar_contenido(*args):
     
 
     elif boton_id == "btn-6":
-        return dbc.Card([
-            dbc.CardBody([
-            html.Div([
-                html.H2("Metodología", className="mt-4"),
-                html.P(
-                    "El análisis inició con la identificación y tratamiento de valores faltantes mediante "
-                    "mapas de missingness y cálculo de porcentajes de ausencia. Dependiendo del mecanismo "
-                    "detectado (MCAR, MAR o MNAR), se aplicó imputación por mediana global, por grupos o "
-                    "conservación de NA. También se evaluó una imputación adicional mediante MICE-PMM."
-                ),
-                html.P(
-                    "Los valores atípicos fueron detectados mediante el IQR y el modified Z-score, "
-                    "imputándolos por mediana hasta su completa eliminación. Con los datos limpios, "
-                    "se realizó un EDA por años y por región OMS."
-                ),
-                html.P(
-                    "Finalmente, se implementaron modelos XGBoost, Random Forest y Gradient Boosting "
-                    "para evaluar desempeño predictivo y comparar su capacidad de clasificación."
-                )
-                ])
+        tabs = dcc.Tabs([
+    
+            # === Pestaña: Metodología Inicial ===
+            dcc.Tab(label="Metodología Inicial", children=[
+                html.Br(),
+                html.H3("Metodología Inicial", className="text-center"),
+                html.Hr(style={"border": "1px solid #ccc", "margin": "30px 0"}),
+    
+                html.P("""
+                El análisis inició con la identificación y tratamiento de valores faltantes mediante mapas de missingness y cálculo de porcentajes de ausencia. Según el mecanismo detectado (MCAR, MAR o MNAR), se aplicó imputación por mediana global, mediana por grupos o conservación de los valores NA. También se comparó una imputación adicional mediante MICE-PMM para evaluar la preservación de distribuciones.
+                """, style={"textAlign": "justify"}),
 
-            ])
+                html.P("""
+                  La detección y corrección de valores atípicos se realizó mediante el rango intercuartílico (IQR) y el modified Z-score, imputando outliers por mediana hasta su completa eliminación.
+                """, style={"textAlign": "justify"}),
+
+
+                html.P("""
+                Con el conjunto limpio y validado, se desarrolló un análisis exploratorio de la prevalencia de LTBI a través de los años y por región OMS. Finalmente, se implementaron los modelos XGBoost, Random Forest y Gradient Boosting para evaluar desempeño predictivo y comparar su capacidad de clasificación.
+                """, style={"textAlign": "justify"}),
+
+        
+.
+ 
+    
+                html.Br(),
+    
+    
+    
+            # === Pestaña: Imputación de Datos ===
+            dcc.Tab(label="Imputación de Datos", children=[
+                html.Br(),
+                html.H3("Imputación de Datos", className="text-center"),
+                html.Hr(style={"border": "1px solid #ccc", "margin": "30px 0"}),
+    
+                html.P("""
+                Se evaluaron los valores faltantes y se aplicaron técnicas de imputación como
+                mediana global, mediana por grupos y MICE-PMM para preservar relaciones estadísticas.
+                """, style={"textAlign": "justify"}),
+    
+                html.Br(),
+    
+                # --- FILA DE 3 IMÁGENES ---
+                dbc.Row([
+                    dbc.Col(html.Img(
+                        id="img-imputacion-1",
+                        src="assets/met1.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-imputacion-2",
+                        src="assets/met2.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-imputacion-3",
+                        src="assets/met3.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+
+
+
+                    dbc.Col(html.Img(
+                        id="img-imputacion-4",
+                        src="assets/met4.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+                ]),
+    
+                html.Br(),
+            ]),
+    
+    
+            # === Pestaña: Validación Estadística ===
+            dcc.Tab(label="Validación Estadística", children=[
+                html.Br(),
+                html.H3("Validación Estadística", className="text-center"),
+                html.Hr(style={"border": "1px solid #ccc", "margin": "30px 0"}),
+    
+                html.P("""
+                Esta fase evalúa la integridad del dataset imputado, comparando distribuciones,
+                preservación de varianza y posibles sesgos introducidos por la imputación.
+                """, style={"textAlign": "justify"}),
+    
+                html.Br(),
+    
+                # --- FILA DE 3 IMÁGENES ---
+                dbc.Row([
+                    dbc.Col(html.Img(
+                        id="img-validacion-1",
+                        src="assets/met5.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-validacion-2",
+                        src="assets/met6.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-validacion-3",
+                        src="assets/met7.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+                ]),
+    
+                html.Br(),
+            ]),
+    
+    
+            # === Pestaña: Implementación ===
+            dcc.Tab(label="Implementación", children=[
+                html.Br(),
+                html.H3("Implementación del Análisis y Modelado", className="text-center"),
+                html.Hr(style={"border": "1px solid #ccc", "margin": "30px 0"}),
+    
+                html.P("""
+                Se entrenaron modelos como XGBoost, Random Forest y Gradient Boosting,
+                además de la construcción del pipeline para el procesamiento y análisis final.
+                """, style={"textAlign": "justify"}),
+    
+                html.Br(),
+    
+                # --- FILA DE 3 IMÁGENES ---
+                dbc.Row([
+                    dbc.Col(html.Img(
+                        id="img-implementacion-1",
+                        src="assets/met8.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-implementacion-2",
+                        src="assets/met9.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+    
+                    dbc.Col(html.Img(
+                        id="img-implementacion-3",
+                        src="assets/met10.png",
+                        style={"width": "100%", "borderRadius": "8px", "marginBottom": "20px"}
+                    ), md=4),
+                ]),
+    
+                html.Br(),
+            ]),
         ])
+    
+        return tabs
 
 
 
@@ -873,6 +1002,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

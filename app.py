@@ -357,13 +357,11 @@ def mostrar_contenido(*args):
                 Con el conjunto limpio y validado, se desarrolló un análisis exploratorio de la prevalencia de LTBI a través de los años y por región OMS. Finalmente, se implementaron los modelos XGBoost, Random Forest y Gradient Boosting para evaluar desempeño predictivo y comparar su capacidad de clasificación.
                 """, style={"textAlign": "justify"}),
 
-        
-.
  
     
                 html.Br(),
     
-    
+            ]),
     
             # === Pestaña: Imputación de Datos ===
             dcc.Tab(label="Imputación de Datos", children=[
@@ -1002,6 +1000,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

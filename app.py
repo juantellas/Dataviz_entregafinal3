@@ -90,11 +90,72 @@ def mostrar_contenido(*args):
     if boton_id == "btn-0":
         return dbc.Card([
             dbc.CardBody([
-                html.H1("Bienvenido al Dashboard", className="text-center mb-4"),
-                html.H3("Análisis interactivo de LTBI a nivel mundial", className="text-center mb-3"),
-                html.Img(src="assets/cover_image.png", style={"width": "60%", "display": "block", "margin": "auto"}),  # opcional
-                html.P("Este dashboard permite explorar la evolución de la prevalencia de LTBI entre 2015 y 2023, así como comparar distintos modelos predictivos.", className="text-center mt-3"),
-                html.P("Selecciona una sección del menú superior para comenzar.", className="text-center text-muted")
+               html.Div(
+    [
+        html.H1(
+            "Análisis Global de LTBI en Contactos Domiciliarios",
+            className="text-center mb-4",
+        ),
+
+        html.H3(
+            "Estimaciones de Tuberculosis Latente (2000–2024)",
+            className="text-center mb-3",
+        ),
+
+        # Imagen principal (opcional)
+        html.Img(
+            src="assets/logo.png",
+            style={"width": "55%", "display": "block", "margin": "auto"},
+        ),
+
+        html.H4(
+            "Colaboración entre:",
+            className="text-center mt-4"
+        ),
+
+        html.P(
+            "Departamento de Ciencias Básicas – Universidad del Norte",
+            className="text-center",
+        ),
+
+        html.P(
+            "Este dashboard presenta un análisis exploratorio de las estimaciones globales "
+            "de infección latente por tuberculosis (LTBI) en contactos domiciliarios, "
+            "utilizando datos publicados por la Organización Mundial de la Salud (OMS). "
+            "El propósito es visualizar tendencias, comparar regiones y facilitar la "
+            "comprensión del comportamiento epidemiológico de la LTBI a lo largo del tiempo.",
+            className="text-center mt-4",
+        ),
+
+        html.P(
+            "Ubicación: Barranquilla, Atlántico – Colombia",
+            className="text-center",
+        ),
+
+        html.P(
+            "Periodo analizado: 2000–2024",
+            className="text-center",
+        ),
+
+        html.P(
+            "Fuente principal: OMS – Global Tuberculosis Programme",
+            className="text-center mb-4",
+        ),
+
+        html.H4("Créditos", className="text-center mt-4"),
+
+        html.Ul(
+            [
+                html.Li("Miguel Ángel Pérez", className="text-center"),
+                html.Li("Camilo Vargas Escorcia", className="text-center"),
+                html.Li("Juan Camilo Aguirre", className="text-center"),
+            ],
+            style={"list-style-type": "none", "padding": 0},
+        ),
+    ],
+    className="container mt-4",
+),
+
             ])
         ])
 
@@ -109,16 +170,6 @@ def mostrar_contenido(*args):
                 """),
                 html.P("""
                 El presente análisis se basa en las estimaciones publicadas por la OMS dentro del Global Tuberculosis Report 2024, específicamente en el apartado sobre infección latente por tuberculosis (LTBI) en contactos domiciliarios, que representa a uno de los grupos poblacionales con mayor vulnerabilidad frente a la transmisión de la enfermedad. Este tipo de información permite observar la situación global de la infección y los avances alcanzados en la detección y contención de la tuberculosis durante las últimas décadas."""),
-                html.P("""
-                En este contexto, el análisis busca responder a la siguiente pregunta:"""),
-                html.P("""
-                ¿Cómo ha variado la prevalencia estimada de infección latente por tuberculosis (LTBI) en contactos domiciliarios a nivel mundial entre los años 2000 y 2024, y qué regiones presentan los mayores cambios en sus estimaciones durante este período?"""),
-                html.H4("Créditos", className="card-title"),
-                html.Ul([
-                    html.Li("Miguel Ángel Pérez"),  
-                    html.Li("Camilo Vargas Escorcia"),
-                    html.Li("Juan Camilo Aguirre"),
-                ]),
                 html.P("Repositorio: https://github.com/juantellas")
             ])
         ])
@@ -653,6 +704,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

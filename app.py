@@ -185,6 +185,7 @@ def mostrar_contenido(*args):
         return dbc.Card([
             dbc.CardBody([
                 html.H4("Contexto Global", className="card-title"),
+                
                 html.P("""
                 Las regiones operativas de la OMS reportan anualmente estimaciones sobre la infección
                 latente por tuberculosis (LTBI) en contactos domiciliarios. Estos valores permiten observar
@@ -193,19 +194,28 @@ def mostrar_contenido(*args):
                 prevalencia central y sus intervalos de incertidumbre, el porcentaje de niños evaluados y el
                 número de personas elegibles para tratamiento preventivo. Esta información resume los
                 principales indicadores usados en la vigilancia global de la LTBI.
-                
                 """),
-
-                 html.P("""
-                 Source: OMS – Global Tuberculosis Programme
+    
+                html.P("""
+                Source: OMS – Global Tuberculosis Programme
                 Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data
                 Period: 2000–2024
                 Variables of interest: Prevalencia en contactos, límites inferior/superior, porcentaje de
                 niños, elegibles para tratamiento
-                
-                """)            
+                """),
+    
+                # Imagen debajo del texto
+                html.Img(
+                    src="assets/map.jpeg",
+                    style={
+                        "width": "70%",
+                        "display": "block",
+                        "margin": "20px auto"
+                    },
+                ),
             ])
         ])
+
 
     elif boton_id == "btn-3":
         return dbc.Card([
@@ -863,6 +873,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

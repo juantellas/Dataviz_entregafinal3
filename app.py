@@ -188,15 +188,16 @@ def mostrar_contenido(*args):
                 número de personas elegibles para tratamiento preventivo. Esta información resume los
                 principales indicadores usados en la vigilancia global de la LTBI.
                 
-                Source: OMS – Global Tuberculosis Programme
-                
+                """),
+
+                 html.P("""
+                 Source: OMS – Global Tuberculosis Programme
                 Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data
-                
                 Period: 2000–2024
-                
                 Variables of interest: Prevalencia en contactos, límites inferior/superior, porcentaje de
                 niños, elegibles para tratamiento
-                """)
+                
+                """)            
             ])
         ])
 
@@ -219,23 +220,101 @@ def mostrar_contenido(*args):
     elif boton_id == "btn-4":
         return dbc.Card([
             dbc.CardBody([
-                html.H4("Objetivos y Justificación", className="card-title"),
-                html.P("""
-                - Analizar la evolución de la prevalencia de LTBI en el tiempo.
-                - Identificar regiones con mayores cambios.
-                - Promover estrategias basadas en evidencia para el control de la tuberculosis.
-                """)
+                html.Div([
+                    html.H2("Objetivos y Justificación", className="mt-4"),
+                
+                    html.H3("Objetivo General"),
+                    html.P(
+                        "Analizar la evolución mundial de la prevalencia de infección latente por "
+                        "tuberculosis (LTBI) en contactos domiciliarios entre 2000 y 2024, utilizando "
+                        "las estimaciones oficiales de la OMS para identificar cambios temporales y "
+                        "diferencias regionales relevantes para la salud pública global."
+                    ),
+                
+                    html.H3("Objetivos Específicos"),
+                    html.Ul([
+                        html.Li("Realizar un análisis descriptivo y exploratorio (EDA) de las tendencias globales y regionales de la prevalencia estimada de LTBI."),
+                        html.Li("Comparar la evolución por regiones de la OMS para identificar áreas con aumentos, disminuciones o estancamientos en la carga latente."),
+                        html.Li("Evaluar los patrones temporales y su posible relación con intervenciones de salud pública, programas de vigilancia, estrategias diagnósticas o cambios epidemiológicos."),
+                        html.Li("Proveer una base analítica que contribuya a recomendaciones para el diseño o ajuste de políticas de control de tuberculosis en poblaciones de alto riesgo."),
+                    ]),
+                
+                    html.H3("Justificación"),
+                    html.P(
+                        "La infección latente por tuberculosis representa uno de los mayores desafíos "
+                        "para la eliminación global de la TB, ya que constituye el reservorio desde el "
+                        "cual emergen nuevos casos activos. Los contactos domiciliarios son un grupo "
+                        "prioritario debido a su exposición directa y sostenida a personas enfermas."
+                    ),
+                    html.P(
+                        "Analizar la evolución de la prevalencia estimada de LTBI en este grupo durante "
+                        "las últimas décadas es esencial para evaluar:"
+                    ),
+                    html.Ul([
+                        html.Li("La efectividad de las estrategias globales de control implementadas por la OMS y países miembros."),
+                        html.Li("Los avances en vigilancia epidemiológica, rastreo de contactos y acceso a herramientas diagnósticas."),
+                        html.Li("La persistencia de desigualdades regionales que puedan limitar el avance hacia la eliminación de la tuberculosis."),
+                        html.Li("Los cambios epidemiológicos asociados a factores sociales, económicos y sanitarios."),
+                    ]),
+                    html.P(
+                        "Este análisis aporta evidencia necesaria para optimizar recursos, priorizar "
+                        "intervenciones y fortalecer políticas dirigidas a poblaciones vulnerables."
+                    )
+                ])
+
             ])
         ])
 
     elif boton_id == "btn-5":
         return dbc.Card([
             dbc.CardBody([
-                html.H4("Marco Teorico", className="card-title"),
-                html.P("""
-                Se utilizaron datos de la OMS (2015-2023). El procesamiento de datos incluyó imputación de valores
-                faltantes y análisis descriptivo mediante Pandas, Seaborn y Plotly.
-                """)
+               html.Div([
+                    html.H2("Marco Teórico", className="mt-4"),
+                
+                    html.H3("1. Tuberculosis como problema de salud pública"),
+                    html.P(
+                        "La tuberculosis (TB) es una enfermedad infecciosa causada por Mycobacterium "
+                        "tuberculosis y continúa siendo uno de los principales desafíos globales en salud. "
+                        "Su persistencia se asocia a pobreza, hacinamiento, debilidad institucional y "
+                        "desigualdades estructurales."
+                    ),
+                
+                    html.H3("2. Infección latente por tuberculosis (LTBI)"),
+                    html.P(
+                        "La LTBI ocurre cuando una persona se infecta con M. tuberculosis pero la bacteria "
+                        "permanece inactiva, sin síntomas ni capacidad de transmisión. Sin embargo, existe "
+                        "riesgo de progresión a enfermedad activa, especialmente en poblaciones vulnerables."
+                    ),
+                
+                    html.H3("3. Contactos domiciliarios como población prioritaria"),
+                    html.P(
+                        "Los contactos domiciliarios presentan un riesgo significativamente mayor de "
+                        "adquirir LTBI debido a la exposición prolongada a casos activos. Son un grupo "
+                        "prioritario en rastreo, diagnóstico y tratamiento preventivo según la OMS."
+                    ),
+                
+                    html.H3("4. Clasificación regional de la OMS y vigilancia epidemiológica"),
+                    html.P(
+                        "La OMS organiza la vigilancia por regiones geográficas (AFR, AMR, EMR, EUR, SEAR, "
+                        "WPR), lo que permite comparar tendencias, identificar desigualdades y evaluar "
+                        "la efectividad de intervenciones sanitarias."
+                    ),
+                
+                    html.H3("5. Indicadores epidemiológicos relevantes para LTBI"),
+                    html.P(
+                        "Un indicador clave es el porcentaje de contactos domiciliarios elegibles o con "
+                        "tratamiento previo para profilaxis. Sus intervalos de incertidumbre reflejan "
+                        "dinámica epidemiológica y acceso a intervenciones."
+                    ),
+                
+                    html.H3("6. Relevancia del análisis temporal (2000–2024)"),
+                    html.P(
+                        "Estudiar la evolución entre 2000 y 2024 permite identificar tendencias globales "
+                        "y regionales, avances, rezagos y su relación con determinantes epidemiológicos "
+                        "y sociales."
+                    ),
+                ])
+
             ])
         ])
     
@@ -243,8 +322,25 @@ def mostrar_contenido(*args):
     elif boton_id == "btn-6":
         return dbc.Card([
             dbc.CardBody([
-                html.H4("Metodologia", className="card-title"),
-                html.P("Proyecto académico — Visualización de Datos 2025.")
+            html.Div([
+                html.H2("Metodología", className="mt-4"),
+                html.P(
+                    "El análisis inició con la identificación y tratamiento de valores faltantes mediante "
+                    "mapas de missingness y cálculo de porcentajes de ausencia. Dependiendo del mecanismo "
+                    "detectado (MCAR, MAR o MNAR), se aplicó imputación por mediana global, por grupos o "
+                    "conservación de NA. También se evaluó una imputación adicional mediante MICE-PMM."
+                ),
+                html.P(
+                    "Los valores atípicos fueron detectados mediante el IQR y el modified Z-score, "
+                    "imputándolos por mediana hasta su completa eliminación. Con los datos limpios, "
+                    "se realizó un EDA por años y por región OMS."
+                ),
+                html.P(
+                    "Finalmente, se implementaron modelos XGBoost, Random Forest y Gradient Boosting "
+                    "para evaluar desempeño predictivo y comparar su capacidad de clasificación."
+                )
+                ])
+
             ])
         ])
 
@@ -713,6 +809,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

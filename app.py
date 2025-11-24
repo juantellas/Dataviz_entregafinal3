@@ -129,9 +129,22 @@ def mostrar_contenido(*args):
             dbc.CardBody([
                 html.H4("Contexto Global", className="card-title"),
                 html.P("""
-                La OMS ha reportado que la carga de tuberculosis varía ampliamente entre regiones, siendo más alta
-                en países de bajos ingresos. El análisis se centra en la prevalencia estimada de infección latente
-                en contactos domiciliarios.
+                Las regiones operativas de la OMS reportan anualmente estimaciones sobre la infección
+                latente por tuberculosis (LTBI) en contactos domiciliarios. Estos valores permiten observar
+                diferencias entre territorios, así como cambios en la prevalencia a lo largo del tiempo.
+                El conjunto de datos utilizado reúne estas estimaciones entre 2000 y 2024, incluyendo la
+                prevalencia central y sus intervalos de incertidumbre, el porcentaje de niños evaluados y el
+                número de personas elegibles para tratamiento preventivo. Esta información resume los
+                principales indicadores usados en la vigilancia global de la LTBI.
+                
+                Source: OMS – Global Tuberculosis Programme
+                
+                Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data
+                
+                Period: 2000–2024
+                
+                Variables of interest: Prevalencia en contactos, límites inferior/superior, porcentaje de
+                niños, elegibles para tratamiento
                 """)
             ])
         ])
@@ -144,6 +157,10 @@ def mostrar_contenido(*args):
                 La infección latente por tuberculosis (LTBI) representa una condición en la que la bacteria
                 Mycobacterium tuberculosis está presente sin causar enfermedad activa.
                 La probabilidad de progresar a TB activa depende de factores inmunológicos y ambientales.
+
+                Con esto en mente, ¿Cómo ha variado la prevalencia estimada de infección latente por tuberculosis (LTBI) en
+                contactos domiciliarios a nivel mundial entre los años 2000 y 2024, y qué regiones presentan los
+                mayores cambios en sus estimaciones durante este período?
                 """)
             ])
         ])
@@ -636,6 +653,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

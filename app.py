@@ -438,58 +438,178 @@ def mostrar_contenido(*args):
 
 
     elif boton_id == "btn-5":
-        return dbc.Card([
-            dbc.CardBody([
-               html.Div([
-                    html.H2("Marco Teórico", className="mt-4"),
-                
-                    html.H3("1. Tuberculosis como problema de salud pública"),
-                    html.P(
-                        "La tuberculosis (TB) es una enfermedad infecciosa causada por Mycobacterium "
-                        "tuberculosis y continúa siendo uno de los principales desafíos globales en salud. "
-                        "Su persistencia se asocia a pobreza, hacinamiento, debilidad institucional y "
-                        "desigualdades estructurales."
-                    ),
-                
-                    html.H3("2. Infección latente por tuberculosis (LTBI)"),
-                    html.P(
-                        "La LTBI ocurre cuando una persona se infecta con M. tuberculosis pero la bacteria "
-                        "permanece inactiva, sin síntomas ni capacidad de transmisión. Sin embargo, existe "
-                        "riesgo de progresión a enfermedad activa, especialmente en poblaciones vulnerables."
-                    ),
-                
-                    html.H3("3. Contactos domiciliarios como población prioritaria"),
-                    html.P(
-                        "Los contactos domiciliarios presentan un riesgo significativamente mayor de "
-                        "adquirir LTBI debido a la exposición prolongada a casos activos. Son un grupo "
-                        "prioritario en rastreo, diagnóstico y tratamiento preventivo según la OMS."
-                    ),
-                
-                    html.H3("4. Clasificación regional de la OMS y vigilancia epidemiológica"),
-                    html.P(
-                        "La OMS organiza la vigilancia por regiones geográficas (AFR, AMR, EMR, EUR, SEAR, "
-                        "WPR), lo que permite comparar tendencias, identificar desigualdades y evaluar "
-                        "la efectividad de intervenciones sanitarias."
-                    ),
-                
-                    html.H3("5. Indicadores epidemiológicos relevantes para LTBI"),
-                    html.P(
-                        "Un indicador clave es el porcentaje de contactos domiciliarios elegibles o con "
-                        "tratamiento previo para profilaxis. Sus intervalos de incertidumbre reflejan "
-                        "dinámica epidemiológica y acceso a intervenciones."
-                    ),
-                
-                    html.H3("6. Relevancia del análisis temporal (2000–2024)"),
-                    html.P(
-                        "Estudiar la evolución entre 2000 y 2024 permite identificar tendencias globales "
-                        "y regionales, avances, rezagos y su relación con determinantes epidemiológicos "
-                        "y sociales."
-                    ),
-                ])
-
-            ])
-        ])
+        return html.Div([
     
+            # Tarjeta del título principal
+            dbc.Card(
+                dbc.CardBody([
+                    html.H2("Marco Teórico", className="card-title")
+                ]),
+                style={
+                    "backgroundColor": "#f3f3f3",
+                    "borderRadius": "14px",
+                    "marginBottom": "20px",
+                    "padding": "10px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+                }
+            ),
+    
+            # ============================
+            # Fila 1
+            # ============================
+            dbc.Row([
+    
+                # Tarjeta 1
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("1. Tuberculosis como problema de salud pública"),
+                            html.P(
+                                "La tuberculosis (TB) es una enfermedad infecciosa causada por Mycobacterium "
+                                "tuberculosis y continúa siendo uno de los principales desafíos globales en salud. "
+                                "Su persistencia se asocia a pobreza, hacinamiento, debilidad institucional y "
+                                "desigualdades estructurales."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                ),
+    
+                # Tarjeta 2
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("2. Infección latente por tuberculosis (LTBI)"),
+                            html.P(
+                                "La LTBI ocurre cuando una persona se infecta con M. tuberculosis pero la bacteria "
+                                "permanece inactiva, sin síntomas ni capacidad de transmisión. Sin embargo, existe "
+                                "riesgo de progresión a enfermedad activa, especialmente en poblaciones vulnerables."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                )
+    
+            ]),
+    
+            # ============================
+            # Fila 2
+            # ============================
+            dbc.Row([
+    
+                # Tarjeta 3
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("3. Contactos domiciliarios como población prioritaria"),
+                            html.P(
+                                "Los contactos domiciliarios presentan un riesgo significativamente mayor de "
+                                "adquirir LTBI debido a la exposición prolongada a casos activos. Son un grupo "
+                                "prioritario en rastreo, diagnóstico y tratamiento preventivo según la OMS."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                ),
+    
+                # Tarjeta 4
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("4. Clasificación regional de la OMS y vigilancia epidemiológica"),
+                            html.P(
+                                "La OMS organiza la vigilancia por regiones geográficas (AFR, AMR, EMR, EUR, SEAR, "
+                                "WPR), lo que permite comparar tendencias, identificar desigualdades y evaluar "
+                                "la efectividad de intervenciones sanitarias."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                )
+    
+            ]),
+    
+            # ============================
+            # Fila 3
+            # ============================
+            dbc.Row([
+    
+                # Tarjeta 5
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("5. Indicadores epidemiológicos relevantes para LTBI"),
+                            html.P(
+                                "Un indicador clave es el porcentaje de contactos domiciliarios elegibles o con "
+                                "tratamiento previo para profilaxis. Sus intervalos de incertidumbre reflejan "
+                                "dinámica epidemiológica y acceso a intervenciones."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                ),
+    
+                # Tarjeta 6
+                dbc.Col(
+                    dbc.Card(
+                        dbc.CardBody([
+                            html.H4("6. Relevancia del análisis temporal (2000–2024)"),
+                            html.P(
+                                "Estudiar la evolución entre 2000 y 2024 permite identificar tendencias globales "
+                                "y regionales, avances, rezagos y su relación con determinantes epidemiológicos "
+                                "y sociales."
+                            )
+                        ]),
+                        style={
+                            "backgroundColor": "#fafafa",
+                            "borderRadius": "14px",
+                            "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                )
+    
+            ])
+    
+        ])
+
 
     elif boton_id == "btn-6":
         tabs = dcc.Tabs([
@@ -1156,6 +1276,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

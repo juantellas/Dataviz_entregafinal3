@@ -331,6 +331,7 @@ def mostrar_contenido(*args):
         ])
 
 
+
     elif boton_id == "btn-4":
         return html.Div([
     
@@ -390,6 +391,49 @@ def mostrar_contenido(*args):
                             "backgroundColor": "#fafafa",
                             "borderRadius": "14px",
                             "padding": "20px",
+                            "marginBottom": "20px",
+                            "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                        }
+                    ),
+                    width=6
+                ),
+    
+            ]),
+    
+            # Tarjeta inferior: Justificación (ancho completo)
+            dbc.Card(
+                dbc.CardBody([
+                    html.H3("Justificación"),
+                    html.P("""
+                    La infección latente por tuberculosis representa uno de los mayores desafíos 
+                    para la eliminación global de la TB, ya que constituye el reservorio desde el 
+                    cual emergen nuevos casos activos. Los contactos domiciliarios son un grupo 
+                    prioritario debido a su exposición directa y sostenida a personas enfermas.
+                    """),
+    
+                    html.P("Analizar su evolución es esencial para evaluar:"),
+    
+                    html.Ul([
+                        html.Li("La efectividad de las estrategias globales implementadas por la OMS y países miembros."),
+                        html.Li("Los avances en vigilancia epidemiológica y acceso a herramientas diagnósticas."),
+                        html.Li("La persistencia de desigualdades regionales que afectan la eliminación de la TB."),
+                        html.Li("Los cambios epidemiológicos asociados a factores sociales, económicos y sanitarios."),
+                    ]),
+    
+                    html.P("""
+                    Este análisis contribuye a fortalecer la toma de decisiones, optimizar recursos 
+                    y priorizar intervenciones en poblaciones vulnerables.
+                    """)
+                ]),
+                style={
+                    "backgroundColor": "#fafafa",
+                    "borderRadius": "14px",
+                    "padding": "20px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                }
+            )
+    
+        ])
 
 
 
@@ -1112,6 +1156,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

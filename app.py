@@ -1057,70 +1057,89 @@ def mostrar_contenido(*args):
     elif boton_id == "btn-8":
         return dbc.Card([
             dbc.CardBody([
-               html.Div(
-    [
-        html.H2("Conclusiones", style={"marginTop": "20px"}),
-
-        html.P(
-            """El análisis del dashboard evidencia que la prevalencia global de infección latente 
-            por tuberculosis (LTBI) ha mostrado una disminución gradual en los últimos años. 
-            Sin embargo, esta reducción aún es insuficiente para alcanzar los objetivos de eliminación 
-            de la tuberculosis si no se interviene de forma decidida sobre el reservorio latente.
-            """
-        ),
-
-        html.P(
-            """Se observa además una marcada heterogeneidad regional: regiones como África y el 
-            Sudeste Asiático concentran la mayor carga de LTBI, lo que refuerza la necesidad de 
-            estrategias diferenciadas según el contexto epidemiológico."""
-        ),
-
-        html.P(
-            """Los resultados resaltan también la importancia de priorizar a poblaciones vulnerables 
-            y grupos de mayor riesgo para pruebas y tratamiento preventivo. La calidad variable de los 
-            datos entre países subraya la utilidad del dashboard como herramienta para visualizar 
-            tendencias, identificar brechas y apoyar decisiones basadas en evidencia."""
-        ),
-
-        html.P(
-            """En conjunto, estos hallazgos ofrecen una visión clara de los desafíos actuales y de 
-            las oportunidades para avanzar en el control de la LTBI."""
-        ),
-
-        html.H2("Recomendaciones", style={"marginTop": "30px"}),
-
-        html.Ul(
-            [
-                html.Li(
-                    "Fortalecer el tamizaje y tratamiento de LTBI en regiones con alta prevalencia, "
-                    "especialmente entre contactos cercanos de casos activos."
+    
+                # =============================
+                #     TARJETA: CONCLUSIONES
+                # =============================
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H2("Conclusiones", className="mt-3 mb-3"),
+    
+                        html.P("""
+                        El análisis del dashboard evidencia que la prevalencia global de infección latente 
+                        por tuberculosis (LTBI) ha mostrado una disminución gradual en los últimos años. 
+                        Sin embargo, esta reducción aún es insuficiente para alcanzar los objetivos de eliminación 
+                        de la tuberculosis si no se interviene de forma decidida sobre el reservorio latente.
+                        """),
+    
+                        html.P("""
+                        Se observa además una marcada heterogeneidad regional: regiones como África y el 
+                        Sudeste Asiático concentran la mayor carga de LTBI, lo que refuerza la necesidad de 
+                        estrategias diferenciadas según el contexto epidemiológico.
+                        """),
+    
+                        html.P("""
+                        Los resultados resaltan también la importancia de priorizar a poblaciones vulnerables 
+                        y grupos de mayor riesgo para pruebas y tratamiento preventivo. La calidad variable 
+                        de los datos entre países subraya la utilidad del dashboard como herramienta para 
+                        visualizar tendencias, identificar brechas y apoyar decisiones basadas en evidencia.
+                        """),
+    
+                        html.P("""
+                        En conjunto, estos hallazgos ofrecen una visión clara de los desafíos actuales y de 
+                        las oportunidades para avanzar en el control de la LTBI.
+                        """),
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "30px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
                 ),
-                html.Li(
-                    "Ampliar la cobertura de terapia preventiva para reducir la progresión hacia tuberculosis activa."
+    
+                # =============================
+                #   TARJETA: RECOMENDACIONES
+                # =============================
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H2("Recomendaciones", className="mt-3 mb-4"),
+    
+                        html.Ul([
+                            html.Li(
+                                "Fortalecer el tamizaje y tratamiento de LTBI en regiones con alta prevalencia, "
+                                "especialmente entre contactos cercanos de casos activos."
+                            ),
+                            html.Li(
+                                "Ampliar la cobertura de terapia preventiva para reducir la progresión hacia tuberculosis activa."
+                            ),
+                            html.Li(
+                                "Mejorar la calidad y consistencia de los datos mediante sistemas de reporte "
+                                "estandarizados a nivel nacional y regional."
+                            ),
+                            html.Li(
+                                "Expandir el dashboard con análisis adicionales, incluyendo escenarios futuros, "
+                                "estimación de reactivaciones evitadas y desagregación por grupos poblacionales."
+                            ),
+                            html.Li(
+                                "Alinear estrategias nacionales con las recomendaciones de la OMS y fortalecer "
+                                "la cooperación entre instituciones locales e internacionales."
+                            ),
+                        ]),
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "10px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
                 ),
-                html.Li(
-                    "Mejorar la calidad y consistencia de los datos mediante sistemas de reporte estandarizados a nivel nacional y regional."
-                ),
-                html.Li(
-                    "Expandir el dashboard con análisis adicionales, como escenarios futuros, estimación de reactivaciones evitadas "
-                    "o desagregación por grupos poblacionales."
-                ),
-                html.Li(
-                    "Alinear estrategias nacionales con las recomendaciones de la OMS, promoviendo colaboración entre instituciones locales "
-                    "e internacionales."
-                ),
-            ]
-        ),
-    ],
-    style={
-        "padding": "20px",
-        "textAlign": "justify",
-        "lineHeight": "1.6",
-    },
-)
-
+    
             ])
         ])
+
 
 # ====================================================
 # 📊 CALLBACKS para los gráficos de análisis EDA (btn-7)
@@ -1411,6 +1430,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

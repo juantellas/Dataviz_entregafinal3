@@ -221,10 +221,25 @@ def mostrar_contenido(*args):
 
 
     elif boton_id == "btn-2":
-        return dbc.Card([
+    return html.Div([
+
+        # Tarjeta del título
+        dbc.Card(
             dbc.CardBody([
-                html.H4("Contexto Global", className="card-title"),
-                
+                html.H4("Contexto Global", className="card-title")
+            ]),
+            style={
+                "backgroundColor": "#f3f3f3",
+                "borderRadius": "14px",
+                "marginBottom": "20px",
+                "padding": "10px",
+                "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+            }
+        ),
+
+        # Tarjeta del texto + viñetas
+        dbc.Card(
+            dbc.CardBody([
                 html.P("""
                 Las regiones operativas de la OMS reportan anualmente estimaciones sobre la infección
                 latente por tuberculosis (LTBI) en contactos domiciliarios. Estos valores permiten observar
@@ -234,26 +249,44 @@ def mostrar_contenido(*args):
                 número de personas elegibles para tratamiento preventivo. Esta información resume los
                 principales indicadores usados en la vigilancia global de la LTBI.
                 """),
-    
-                html.P("""
-                Source: OMS – Global Tuberculosis Programme
-                Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data
-                Period: 2000–2024
-                Variables of interest: Prevalencia en contactos, límites inferior/superior, porcentaje de
-                niños, elegibles para tratamiento
-                """),
-    
-                # Imagen debajo del texto
+
+                html.Ul([
+                    html.Li("Source: OMS – Global Tuberculosis Programme"),
+                    html.Li("Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data"),
+                    html.Li("Period: 2000–2024"),
+                    html.Li("Variables: Prevalencia, intervalos inferior/superior, % de niños, elegibles para tratamiento")
+                ])
+            ]),
+            style={
+                "backgroundColor": "#fafafa",
+                "borderRadius": "14px",
+                "padding": "20px",
+                "marginBottom": "20px",
+                "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+            }
+        ),
+
+        # Tarjeta de la imagen
+        dbc.Card(
+            dbc.CardBody([
                 html.Img(
                     src="assets/map.jpeg",
                     style={
-                        "width": "70%",
+                        "width": "80%",
                         "display": "block",
-                        "margin": "20px auto"
+                        "margin": "0 auto"
                     },
-                ),
-            ])
-        ])
+                )
+            ]),
+            style={
+                "backgroundColor": "#fafafa",
+                "borderRadius": "14px",
+                "padding": "20px",
+                "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+            }
+        )
+
+    ])
 
 
     elif boton_id == "btn-3":
@@ -1039,6 +1072,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

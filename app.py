@@ -290,20 +290,46 @@ def mostrar_contenido(*args):
 
 
     elif boton_id == "btn-3":
-        return dbc.Card([
-            dbc.CardBody([
-                html.H4("Planteamiento del Problema", className="card-title"),
-                html.P("""
-                La infección latente por tuberculosis (LTBI) representa una condición en la que la bacteria
-                Mycobacterium tuberculosis está presente sin causar enfermedad activa.
-                La probabilidad de progresar a TB activa depende de factores inmunológicos y ambientales.
-
-                Con esto en mente, ¿Cómo ha variado la prevalencia estimada de infección latente por tuberculosis (LTBI) en
-                contactos domiciliarios a nivel mundial entre los años 2000 y 2024, y qué regiones presentan los
-                mayores cambios en sus estimaciones durante este período?
-                """)
-            ])
+        return html.Div([
+    
+            # Tarjeta del título
+            dbc.Card(
+                dbc.CardBody([
+                    html.H4("Planteamiento del Problema", className="card-title")
+                ]),
+                style={
+                    "backgroundColor": "#f3f3f3",
+                    "borderRadius": "14px",
+                    "marginBottom": "20px",
+                    "padding": "10px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+                }
+            ),
+    
+            # Tarjeta del texto
+            dbc.Card(
+                dbc.CardBody([
+                    html.P("""
+                    La infección latente por tuberculosis (LTBI) representa una condición en la que la bacteria
+                    Mycobacterium tuberculosis está presente sin causar enfermedad activa.
+                    La probabilidad de progresar a TB activa depende de factores inmunológicos y ambientales.
+    
+                    Con esto en mente, surge la pregunta central:
+                    ¿Cómo ha variado la prevalencia estimada de infección latente por tuberculosis (LTBI) en
+                    contactos domiciliarios a nivel mundial entre los años 2000 y 2024, y qué regiones presentan los
+                    mayores cambios en sus estimaciones durante este período?
+                    """)
+                ]),
+                style={
+                    "backgroundColor": "#fafafa",
+                    "borderRadius": "14px",
+                    "padding": "20px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                }
+            )
+    
         ])
+
 
     elif boton_id == "btn-4":
         return dbc.Card([
@@ -1072,6 +1098,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

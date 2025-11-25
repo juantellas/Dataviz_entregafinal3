@@ -26,7 +26,7 @@ df_imputado = pd.read_csv("data/df_imputado.csv")
 
 # --- Cargar modelos ---
 # --- Cargar packs ---
-modelos_pack = {c
+modelos_pack = {
     "XGBoost": joblib.load("models/xgboost_pack.pkl"),
     "Random Forest": joblib.load("models/random_forest_pack.pkl"),
     "Gradient Boosting": joblib.load("models/gradient_boosting_pack.pkl")
@@ -1056,6 +1056,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

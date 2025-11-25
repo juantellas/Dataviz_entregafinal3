@@ -332,7 +332,7 @@ def mostrar_contenido(*args):
 
 
    elif boton_id == "btn-4":
-        return html.Div([
+       return html.Div([
     
             # Tarjeta del título principal
             dbc.Card(
@@ -1154,6 +1154,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

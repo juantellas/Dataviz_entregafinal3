@@ -221,72 +221,72 @@ def mostrar_contenido(*args):
 
 
     elif boton_id == "btn-2":
-    return html.Div([
-
-        # Tarjeta del título
-        dbc.Card(
-            dbc.CardBody([
-                html.H4("Contexto Global", className="card-title")
-            ]),
-            style={
-                "backgroundColor": "#f3f3f3",
-                "borderRadius": "14px",
-                "marginBottom": "20px",
-                "padding": "10px",
-                "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
-            }
-        ),
-
-        # Tarjeta del texto + viñetas
-        dbc.Card(
-            dbc.CardBody([
-                html.P("""
-                Las regiones operativas de la OMS reportan anualmente estimaciones sobre la infección
-                latente por tuberculosis (LTBI) en contactos domiciliarios. Estos valores permiten observar
-                diferencias entre territorios, así como cambios en la prevalencia a lo largo del tiempo.
-                El conjunto de datos utilizado reúne estas estimaciones entre 2000 y 2024, incluyendo la
-                prevalencia central y sus intervalos de incertidumbre, el porcentaje de niños evaluados y el
-                número de personas elegibles para tratamiento preventivo. Esta información resume los
-                principales indicadores usados en la vigilancia global de la LTBI.
-                """),
-
-                html.Ul([
-                    html.Li("Source: OMS – Global Tuberculosis Programme"),
-                    html.Li("Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data"),
-                    html.Li("Period: 2000–2024"),
-                    html.Li("Variables: Prevalencia, intervalos inferior/superior, % de niños, elegibles para tratamiento")
-                ])
-            ]),
-            style={
-                "backgroundColor": "#fafafa",
-                "borderRadius": "14px",
-                "padding": "20px",
-                "marginBottom": "20px",
-                "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
-            }
-        ),
-
-        # Tarjeta de la imagen
-        dbc.Card(
-            dbc.CardBody([
-                html.Img(
-                    src="assets/map.jpeg",
-                    style={
-                        "width": "80%",
-                        "display": "block",
-                        "margin": "0 auto"
-                    },
-                )
-            ]),
-            style={
-                "backgroundColor": "#fafafa",
-                "borderRadius": "14px",
-                "padding": "20px",
-                "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
-            }
-        )
-
-    ])
+        return html.Div([
+    
+            # Tarjeta del título
+            dbc.Card(
+                dbc.CardBody([
+                    html.H4("Contexto Global", className="card-title")
+                ]),
+                style={
+                    "backgroundColor": "#f3f3f3",
+                    "borderRadius": "14px",
+                    "marginBottom": "20px",
+                    "padding": "10px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+                }
+            ),
+    
+            # Tarjeta del texto + viñetas
+            dbc.Card(
+                dbc.CardBody([
+                    html.P("""
+                    Las regiones operativas de la OMS reportan anualmente estimaciones sobre la infección
+                    latente por tuberculosis (LTBI) en contactos domiciliarios. Estos valores permiten observar
+                    diferencias entre territorios, así como cambios en la prevalencia a lo largo del tiempo.
+                    El conjunto de datos utilizado reúne estas estimaciones entre 2000 y 2024, incluyendo la
+                    prevalencia central y sus intervalos de incertidumbre, el porcentaje de niños evaluados y el
+                    número de personas elegibles para tratamiento preventivo. Esta información resume los
+                    principales indicadores usados en la vigilancia global de la LTBI.
+                    """),
+    
+                    html.Ul([
+                        html.Li("Source: OMS – Global Tuberculosis Programme"),
+                        html.Li("Link: https://www.who.int/teams/global-programme-on-tuberculosis-and-lung-health/data"),
+                        html.Li("Period: 2000–2024"),
+                        html.Li("Variables: Prevalencia, intervalos inferior/superior, % de niños, elegibles para tratamiento")
+                    ])
+                ]),
+                style={
+                    "backgroundColor": "#fafafa",
+                    "borderRadius": "14px",
+                    "padding": "20px",
+                    "marginBottom": "20px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                }
+            ),
+    
+            # Tarjeta de la imagen
+            dbc.Card(
+                dbc.CardBody([
+                    html.Img(
+                        src="assets/map.jpeg",
+                        style={
+                            "width": "80%",
+                            "display": "block",
+                            "margin": "0 auto"
+                        },
+                    )
+                ]),
+                style={
+                    "backgroundColor": "#fafafa",
+                    "borderRadius": "14px",
+                    "padding": "20px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                }
+            )
+    
+        ])
 
 
     elif boton_id == "btn-3":
@@ -1072,6 +1072,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

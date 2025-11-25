@@ -611,217 +611,261 @@ def mostrar_contenido(*args):
         ])
 
     elif boton_id == "btn-6":
+    
         tabs = dcc.Tabs([
     
-            # ============================================================
-            # === Pestaña: Metodología Inicial ===
-            # ============================================================
+            # ===============================================================
+            # 1. METODOLOGÍA INICIAL
+            # ===============================================================
             dcc.Tab(label="Metodología Inicial", children=[
                 html.Br(),
     
-                # --- Tarjeta del título ---
-                dbc.Card([
+                dbc.Card(
                     dbc.CardBody([
+    
                         html.H3("Metodología Inicial", className="text-center"),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.15)",
-                    "marginBottom": "20px"
-                }),
+                        html.Hr(),
     
-                # --- Tarjeta del texto ---
-                dbc.Card([
-                    dbc.CardBody([
                         html.P("""
-                        El análisis inició con la identificación y tratamiento de valores faltantes mediante mapas de missingness y cálculo de porcentajes de ausencia. Según el mecanismo detectado (MCAR, MAR o MNAR), se aplicó imputación por mediana global, mediana por grupos o conservación de los valores NA. También se comparó una imputación adicional mediante MICE-PMM para evaluar la preservación de distribuciones.
+                        El análisis inició con la identificación y tratamiento de valores faltantes
+                        mediante mapas de missingness y porcentajes de ausencia. Dependiendo del mecanismo
+                        identificado (MCAR, MAR o MNAR), se aplicó imputación por mediana global,
+                        mediana estratificada o preservación de valores faltantes. También se probó
+                        imputación MICE-PMM para evaluar la preservación de distribuciones.
                         """, style={"textAlign": "justify"}),
     
                         html.P("""
-                        La detección y corrección de valores atípicos se realizó mediante el rango intercuartílico (IQR) y el modified Z-score, imputando outliers por mediana hasta su completa eliminación.
+                        Los valores atípicos se evaluaron mediante el rango intercuartílico (IQR)
+                        y el modified Z-score, corrigiéndose por imputación con la mediana hasta su
+                        completa estabilización.
                         """, style={"textAlign": "justify"}),
     
                         html.P("""
-                        Con el conjunto limpio y validado, se desarrolló un análisis exploratorio de la prevalencia de LTBI a través de los años y por región OMS. Finalmente, se implementaron los modelos XGBoost, Random Forest y Gradient Boosting para evaluar desempeño predictivo y comparar su capacidad de clasificación.
+                        Con el dataset limpio, se desarrolló un análisis exploratorio de la prevalencia
+                        de LTBI por año y región OMS. Finalmente se entrenaron modelos predictivos como
+                        XGBoost, Random Forest y Gradient Boosting.
                         """, style={"textAlign": "justify"}),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.10)",
-                    "padding": "20px",
-                    "marginBottom": "10px"
-                }),
+    
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "30px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
+                ),
             ]),
     
-            # ============================================================
-            # === Pestaña: Imputación de Datos ===
-            # ============================================================
+            # ===============================================================
+            # 2. IMPUTACIÓN DE DATOS (MODIFICADO A 2×2)
+            # ===============================================================
             dcc.Tab(label="Imputación de Datos", children=[
                 html.Br(),
     
-                # --- Tarjeta del título ---
-                dbc.Card([
+                dbc.Card(
                     dbc.CardBody([
+    
                         html.H3("Imputación de Datos", className="text-center"),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.15)",
-                    "marginBottom": "20px"
-                }),
+                        html.Hr(),
     
-                # --- Tarjeta del texto ---
-                dbc.Card([
-                    dbc.CardBody([
                         html.P("""
-                        Se evaluaron los valores faltantes y se aplicaron técnicas de imputación como
-                        mediana global, mediana por grupos y MICE-PMM para preservar relaciones estadísticas.
+                        Se evaluó el patrón de valores faltantes y se aplicaron técnicas de imputación
+                        como mediana global, mediana por grupos y MICE-PMM. El objetivo fue preservar la
+                        estructura estadística y minimizar sesgos en la distribución de variables.
                         """, style={"textAlign": "justify"}),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.10)",
-                    "marginBottom": "25px"
-                }),
     
-                # === GRID 2x2 DE IMÁGENES ===
-                dbc.Row([
-                    dbc.Col(html.Img(
-                        id="img-imputacion-1",
-                        src="assets/met1.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=6),
+                        html.Br(),
     
-                    dbc.Col(html.Img(
-                        id="img-imputacion-2",
-                        src="assets/met2.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=6),
-                ]),
+                        # ---------------------- 2x2 GRID ----------------------
+                        dbc.Row([
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met1.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Mapa de valores faltantes"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=6
+                            ),
     
-                dbc.Row([
-                    dbc.Col(html.Img(
-                        id="img-imputacion-3",
-                        src="assets/met3.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=6),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met2.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Distribución antes de imputar"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=6
+                            ),
+                        ]),
     
-                    dbc.Col(html.Img(
-                        id="img-imputacion-4",
-                        src="assets/met4.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=6),
-                ]),
+                        dbc.Row([
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met3.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Comparación de métodos de imputación"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=6
+                            ),
     
-                html.Br(),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met4.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Resultado final (MICE-PMM)"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=6
+                            ),
+                        ]),
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "30px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
+                ),
             ]),
     
-            # ============================================================
-            # === Pestaña: Validación Estadística ===
-            # ============================================================
+            # ===============================================================
+            # 3. VALIDACIÓN ESTADÍSTICA
+            # ===============================================================
             dcc.Tab(label="Validación Estadística", children=[
                 html.Br(),
     
-                # --- Tarjeta del título ---
-                dbc.Card([
+                dbc.Card(
                     dbc.CardBody([
+    
                         html.H3("Validación Estadística", className="text-center"),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.15)",
-                    "marginBottom": "20px"
-                }),
+                        html.Hr(),
     
-                # --- Tarjeta del texto ---
-                dbc.Card([
-                    dbc.CardBody([
                         html.P("""
-                        Esta fase evalúa la integridad del dataset imputado, comparando distribuciones,
-                        preservación de varianza y posibles sesgos introducidos por la imputación.
+                        Esta etapa evalúa la integridad del dataset imputado, verificando si las
+                        distribuciones originales fueron preservadas y si la imputación introdujo algún
+                        sesgo. Se compararon varianzas, histogramas y densidades entre datos originales,
+                        imputados y combinados.
                         """, style={"textAlign": "justify"}),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.10)",
-                    "marginBottom": "25px"
-                }),
     
-                dbc.Row([
-                    dbc.Col(html.Img(
-                        id="img-validacion-1",
-                        src="assets/met5.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
+                        html.Br(),
     
-                    dbc.Col(html.Img(
-                        id="img-validacion-2",
-                        src="assets/met6.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
+                        dbc.Row([
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met5.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Comparación de varianzas"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
     
-                    dbc.Col(html.Img(
-                        id="img-validacion-3",
-                        src="assets/met7.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
-                ]),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met6.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Histogramas antes/después"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
     
-                html.Br(),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met7.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Comparación densidades KDE"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
+                        ]),
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "30px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
+                )
             ]),
     
-            # ============================================================
-            # === Pestaña: Implementación ===
-            # ============================================================
+            # ===============================================================
+            # 4. IMPLEMENTACIÓN DEL MODELADO
+            # ===============================================================
             dcc.Tab(label="Implementación", children=[
                 html.Br(),
     
-                # --- Tarjeta del título ---
-                dbc.Card([
+                dbc.Card(
                     dbc.CardBody([
+    
                         html.H3("Implementación del Análisis y Modelado", className="text-center"),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.15)",
-                    "marginBottom": "20px"
-                }),
+                        html.Hr(),
     
-                # --- Tarjeta del texto ---
-                dbc.Card([
-                    dbc.CardBody([
                         html.P("""
-                        Se entrenaron modelos como XGBoost, Random Forest y Gradient Boosting,
-                        además de la construcción del pipeline para el procesamiento y análisis final.
+                        Se construyeron y entrenaron modelos de clasificación como XGBoost,
+                        Random Forest y Gradient Boosting. Se implementó un pipeline completo con
+                        preprocesamiento, partición de datos, selección de variables e interpretación de
+                        métricas.
                         """, style={"textAlign": "justify"}),
-                    ])
-                ], style={
-                    "borderRadius": "15px",
-                    "boxShadow": "0 2px 8px rgba(0,0,0,0.10)",
-                    "marginBottom": "25px"
-                }),
     
-                dbc.Row([
-                    dbc.Col(html.Img(
-                        id="img-implementacion-1",
-                        src="assets/met8.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
+                        html.Br(),
     
-                    dbc.Col(html.Img(
-                        id="img-implementacion-2",
-                        src="assets/met9.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
+                        dbc.Row([
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met8.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Pipeline final"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
     
-                    dbc.Col(html.Img(
-                        id="img-implementacion-3",
-                        src="assets/met10.png",
-                        style={"width": "100%", "borderRadius": "12px", "marginBottom": "20px"}
-                    ), md=4),
-                ]),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met9.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Entrenamiento modelos"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
     
-                html.Br(),
+                            dbc.Col(
+                                dbc.Card([
+                                    html.Img(src="assets/met10.png",
+                                             style={"width": "100%", "borderRadius": "12px"}),
+                                    dbc.CardBody(html.P("Comparación desempeño"))
+                                ], style={"borderRadius": "14px",
+                                          "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
+                                          "marginBottom": "20px"}),
+                                md=4
+                            ),
+                        ]),
+                    ]),
+                    style={
+                        "backgroundColor": "#ffffff",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "30px",
+                        "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"
+                    }
+                )
             ]),
         ])
     
@@ -1340,6 +1384,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

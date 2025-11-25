@@ -331,53 +331,109 @@ def mostrar_contenido(*args):
         ])
 
 
-    elif boton_id == "btn-4":
-        return dbc.Card([
-            dbc.CardBody([
-                html.Div([
-                    html.H2("Objetivos y Justificación", className="mt-4"),
-                
-                    html.H3("Objetivo General"),
-                    html.P(
-                        "Analizar la evolución mundial de la prevalencia de infección latente por "
-                        "tuberculosis (LTBI) en contactos domiciliarios entre 2000 y 2024, utilizando "
-                        "las estimaciones oficiales de la OMS para identificar cambios temporales y "
-                        "diferencias regionales relevantes para la salud pública global."
-                    ),
-                
-                    html.H3("Objetivos Específicos"),
-                    html.Ul([
-                        html.Li("Realizar un análisis descriptivo y exploratorio (EDA) de las tendencias globales y regionales de la prevalencia estimada de LTBI."),
-                        html.Li("Comparar la evolución por regiones de la OMS para identificar áreas con aumentos, disminuciones o estancamientos en la carga latente."),
-                        html.Li("Evaluar los patrones temporales y su posible relación con intervenciones de salud pública, programas de vigilancia, estrategias diagnósticas o cambios epidemiológicos."),
-                        html.Li("Proveer una base analítica que contribuya a recomendaciones para el diseño o ajuste de políticas de control de tuberculosis en poblaciones de alto riesgo."),
-                    ]),
-                
-                    html.H3("Justificación"),
-                    html.P(
-                        "La infección latente por tuberculosis representa uno de los mayores desafíos "
-                        "para la eliminación global de la TB, ya que constituye el reservorio desde el "
-                        "cual emergen nuevos casos activos. Los contactos domiciliarios son un grupo "
-                        "prioritario debido a su exposición directa y sostenida a personas enfermas."
-                    ),
-                    html.P(
-                        "Analizar la evolución de la prevalencia estimada de LTBI en este grupo durante "
-                        "las últimas décadas es esencial para evaluar:"
-                    ),
-                    html.Ul([
-                        html.Li("La efectividad de las estrategias globales de control implementadas por la OMS y países miembros."),
-                        html.Li("Los avances en vigilancia epidemiológica, rastreo de contactos y acceso a herramientas diagnósticas."),
-                        html.Li("La persistencia de desigualdades regionales que puedan limitar el avance hacia la eliminación de la tuberculosis."),
-                        html.Li("Los cambios epidemiológicos asociados a factores sociales, económicos y sanitarios."),
-                    ]),
-                    html.P(
-                        "Este análisis aporta evidencia necesaria para optimizar recursos, priorizar "
-                        "intervenciones y fortalecer políticas dirigidas a poblaciones vulnerables."
-                    )
-                ])
+   elif boton_id == "btn-4":
+    return html.Div([
 
-            ])
-        ])
+        # Tarjeta del título principal
+        dbc.Card(
+            dbc.CardBody([
+                html.H2("Objetivos y Justificación", className="card-title")
+            ]),
+            style={
+                "backgroundColor": "#f3f3f3",
+                "borderRadius": "14px",
+                "marginBottom": "20px",
+                "padding": "10px",
+                "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+            }
+        ),
+
+        # Fila con Objetivo General (izquierda) y Objetivos Específicos (derecha)
+        dbc.Row([
+
+            # Columna izquierda - Objetivo General
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H3("Objetivo General"),
+                        html.P("""
+                        Analizar la evolución mundial de la prevalencia de infección latente por 
+                        tuberculosis (LTBI) en contactos domiciliarios entre 2000 y 2024, utilizando 
+                        las estimaciones oficiales de la OMS para identificar cambios temporales y 
+                        diferencias regionales relevantes para la salud pública global.
+                        """)
+                    ]),
+                    style={
+                        "backgroundColor": "#fafafa",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "20px",
+                        "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                    }
+                ),
+                width=6
+            ),
+
+            # Columna derecha - Objetivos Específicos
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H3("Objetivos Específicos"),
+                        html.Ul([
+                            html.Li("Realizar un análisis descriptivo y exploratorio (EDA) de las tendencias globales y regionales de la prevalencia estimada de LTBI."),
+                            html.Li("Comparar la evolución por regiones de la OMS para identificar aumentos, disminuciones o estancamientos en la carga latente."),
+                            html.Li("Evaluar los patrones temporales y su relación con intervenciones de salud pública o cambios epidemiológicos."),
+                            html.Li("Proveer una base analítica que apoye nuevas políticas de control de tuberculosis en poblaciones vulnerables."),
+                        ])
+                    ]),
+                    style={
+                        "backgroundColor": "#fafafa",
+                        "borderRadius": "14px",
+                        "padding": "20px",
+                        "marginBottom": "20px",
+                        "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                    }
+                ),
+                width=6
+            ),
+
+        ]),
+
+        # Tarjeta inferior: Justificación (ancho completo)
+        dbc.Card(
+            dbc.CardBody([
+                html.H3("Justificación"),
+                html.P("""
+                La infección latente por tuberculosis representa uno de los mayores desafíos 
+                para la eliminación global de la TB, ya que constituye el reservorio desde el 
+                cual emergen nuevos casos activos. Los contactos domiciliarios son un grupo 
+                prioritario debido a su exposición directa y sostenida a personas enfermas.
+                """),
+
+                html.P("Analizar su evolución es esencial para evaluar:"),
+
+                html.Ul([
+                    html.Li("La efectividad de las estrategias globales implementadas por la OMS y países miembros."),
+                    html.Li("Los avances en vigilancia epidemiológica y acceso a herramientas diagnósticas."),
+                    html.Li("La persistencia de desigualdades regionales que afectan la eliminación de la TB."),
+                    html.Li("Los cambios epidemiológicos asociados a factores sociales, económicos y sanitarios."),
+                ]),
+
+                html.P("""
+                Este análisis contribuye a fortalecer la toma de decisiones, optimizar recursos 
+                y priorizar intervenciones en poblaciones vulnerables.
+                """)
+            ]),
+            style={
+                "backgroundColor": "#fafafa",
+                "borderRadius": "14px",
+                "padding": "20px",
+                "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+            }
+        )
+
+    ])
+
 
     elif boton_id == "btn-5":
         return dbc.Card([
@@ -1098,6 +1154,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

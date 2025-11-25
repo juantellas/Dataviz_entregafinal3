@@ -692,82 +692,79 @@ def mostrar_contenido(*args):
                     # ==========================================================
                     dcc.Tab(label="Imputación de Datos", children=[
                         html.Br(),
-    
+                    
                         dbc.Card(
                             dbc.CardBody([
                                 html.H3("Imputación de Datos", className="text-center"),
                                 html.Hr(),
-    
+                    
                                 html.P("""
                                 Se evaluó el patrón de valores faltantes y se aplicaron distintas técnicas
                                 de imputación: mediana global, mediana estratificada y MICE-PMM. El objetivo
                                 fue preservar la estructura estadística del dataset y minimizar sesgos.
                                 """, style={"textAlign": "justify"}),
-    
+                    
                                 html.Br(),
-    
-                                # Galería en tarjetas
+                    
+                                # ============================
+                                #   GALERÍA 2×2 EN TARJETAS
+                                # ============================
+                    
                                 dbc.Row([
-    
                                     # IMAGEN 1
                                     dbc.Col(
                                         dbc.Card([
                                             html.Img(src="assets/met1.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Mapa de valores faltantes"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
-                                        md=4
+                                        md=6
                                     ),
-    
+                    
                                     # IMAGEN 2
                                     dbc.Col(
                                         dbc.Card([
                                             html.Img(src="assets/met2.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Distribución antes de imputar"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
-                                        md=4
+                                        md=6
                                     ),
-    
+                                ]),
+                    
+                                dbc.Row([
                                     # IMAGEN 3
                                     dbc.Col(
                                         dbc.Card([
                                             html.Img(src="assets/met3.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Comparación imputaciones"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
-                                        md=4
+                                        md=6
                                     ),
-    
-                                ]),
-    
-                                dbc.Row([
-                                    # IMAGEN 4 — fila aparte
+                    
+                                    # IMAGEN 4
                                     dbc.Col(
                                         dbc.Card([
                                             html.Img(src="assets/met4.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Resultado final de MICE-PMM"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
-                                        md=4
+                                        md=6
                                     ),
                                 ]),
-    
+                    
                             ]),
                             style={"backgroundColor": "#ffffff", "borderRadius": "14px",
                                    "padding": "20px", "marginBottom": "30px",
                                    "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"}
                         ),
-    
-                    ]),
+                    ])
+
     
                     # ==========================================================
                     #  3. VALIDACIÓN ESTADÍSTICA
@@ -1420,6 +1417,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

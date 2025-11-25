@@ -166,74 +166,57 @@ def mostrar_contenido(*args):
         ])
 
     
-    
     elif boton_id == "btn-1":
-        return dbc.Card([
-            dbc.CardBody([
+        return html.Div([
     
-                # Caja oscura para el título
-                dbc.Card(
-                    dbc.CardBody(
-                        html.H4("Introducción", className="card-title", style={"color": "white"})
-                    ),
-                    style={
-                        "backgroundColor": "#2c2c2c",
-                        "borderRadius": "8px",
-                        "padding": "10px",
-                        "marginBottom": "15px"
-                    }
-                ),
+            # Tarjeta del título
+            dbc.Card(
+                dbc.CardBody([
+                    html.H4("Introducción", className="card-title")
+                ]),
+                style={
+                    "backgroundColor": "#f3f3f3",
+                    "borderRadius": "14px",
+                    "marginBottom": "20px",
+                    "padding": "10px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.12)"
+                }
+            ),
     
-                # Caja oscura para el texto 1
-                dbc.Card(
-                    dbc.CardBody(
-                        html.P("""
-                        La tuberculosis (TB) sigue siendo una de las enfermedades infecciosas más relevantes 
-                        a nivel global, con un impacto sostenido en la salud pública a pesar de los avances en 
-                        diagnóstico y tratamiento. Una proporción significativa de la población mundial vive 
-                        con una infección latente por Mycobacterium tuberculosis (LTBI)...
-                        """)
-                    ),
-                    style={
-                        "backgroundColor": "#3a3a3a",
-                        "color": "white",
-                        "borderRadius": "8px",
-                        "padding": "15px",
-                        "marginBottom": "15px"
-                    }
-                ),
+            # Tarjeta del texto completo
+            dbc.Card(
+                dbc.CardBody([
+                    html.P("""
+                    La tuberculosis (TB) sigue siendo una de las enfermedades infecciosas más relevantes
+                    a nivel global, con un impacto sostenido en la salud pública a pesar de los avances
+                    en diagnóstico y tratamiento. Una proporción significativa de la población mundial
+                    vive con una infección latente por Mycobacterium tuberculosis (LTBI), lo que implica
+                    la presencia de la bacteria sin manifestación activa de la enfermedad, pero con riesgo
+                    potencial de desarrollarla en el futuro. Comprender la magnitud y evolución de esta
+                    infección es fundamental para orientar las políticas de prevención y control que
+                    promueve la Organización Mundial de la Salud (OMS).
+                    """),
     
-                # Caja oscura para el texto 2
-                dbc.Card(
-                    dbc.CardBody(
-                        html.P("""
-                        El presente análisis se basa en las estimaciones publicadas por la OMS dentro del 
-                        Global Tuberculosis Report 2024...
-                        """)
-                    ),
-                    style={
-                        "backgroundColor": "#3a3a3a",
-                        "color": "white",
-                        "borderRadius": "8px",
-                        "padding": "15px",
-                        "marginBottom": "15px"
-                    }
-                ),
+                    html.P("""
+                    El presente análisis se basa en las estimaciones publicadas por la OMS dentro del
+                    Global Tuberculosis Report 2024, específicamente en el apartado sobre infección
+                    latente por tuberculosis (LTBI) en contactos domiciliarios, que representa a uno de
+                    los grupos poblacionales con mayor vulnerabilidad frente a la transmisión de la
+                    enfermedad. Este tipo de información permite observar la situación global de la
+                    infección y los avances alcanzados en la detección y contención de la tuberculosis
+                    durante las últimas décadas.
+                    """),
     
-                # Caja oscura para el repositorio
-                dbc.Card(
-                    dbc.CardBody(
-                        html.P("Repositorio: https://github.com/juantellas")
-                    ),
-                    style={
-                        "backgroundColor": "#3a3a3a",
-                        "color": "white",
-                        "borderRadius": "8px",
-                        "padding": "15px"
-                    }
-                ),
+                    html.P("Repositorio: https://github.com/juantellas")
+                ]),
+                style={
+                    "backgroundColor": "#fafafa",
+                    "borderRadius": "14px",
+                    "padding": "20px",
+                    "boxShadow": "0 3px 8px rgba(0,0,0,0.10)"
+                }
+            )
     
-            ])
         ])
 
 
@@ -1056,6 +1039,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

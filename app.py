@@ -763,7 +763,7 @@ def mostrar_contenido(*args):
                                    "padding": "20px", "marginBottom": "30px",
                                    "boxShadow": "0 4px 10px rgba(0,0,0,0.12)"}
                         ),
-                    ])
+                    ]),
 
     
                     # ==========================================================
@@ -1417,6 +1417,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

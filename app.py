@@ -107,7 +107,7 @@ def mostrar_contenido(*args):
         html.Img(
             src="assets/logo.png",
             style={
-                "width": "20%",           # (opcional) también puedes ajustar el tamaño
+                "width": "10%",           # (opcional) también puedes ajustar el tamaño
                 "display": "block",
                 "margin": "10px auto"     # margen reducido
             },
@@ -1430,6 +1430,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 

@@ -793,7 +793,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met5.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Comparación densidades"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -805,7 +804,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met6.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Validación por grupos"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -817,7 +815,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met7.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Análisis de varianza residual"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -860,7 +857,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met8.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Pipeline general"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -871,7 +867,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met9.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Entrenamiento modelos"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -882,7 +877,6 @@ def mostrar_contenido(*args):
                                         dbc.Card([
                                             html.Img(src="assets/met10.png",
                                                      style={"width": "100%", "borderRadius": "10px"}),
-                                            dbc.CardBody(html.P("Comparación final de métricas"))
                                         ], style={"borderRadius": "14px",
                                                   "boxShadow": "0 3px 6px rgba(0,0,0,0.12)",
                                                   "marginBottom": "20px"}),
@@ -1417,6 +1411,7 @@ def actualizar_metricas(modelo_seleccionado, modelos_comparar):
 
 if __name__ == "__main__":
        app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 10000)), debug=False)
+
 
 
 
